@@ -15,7 +15,7 @@ public class Master {
 	private Floor flo;
 	private Order ord;
 	private Inventory inv;
-    private Belts bel;
+    private Belt bel;
     private Visualizer vis;
     Comparator<Event> comparator;
     /**
@@ -46,31 +46,31 @@ public class Master {
 	//loop to run the simulation	
 public void Run(int limit) {
 	  
-    Master m = new Master( );
+   
     
-    m.tickCount();
-    m.createEvents();
+    tickCount();
+    createEvents();
 		
 		while (true){
                     
-			m.increaseCount();
-			m.tickCount();
+			increaseCount();
+			tickCount();
 			//break leaves a loop.
-			if (m.getCount() > limit){
+			if (getCount() > limit){
 				break;
 			}
 			// continue jumps to the next iteration.
-			if (m.peek() == null){
+			if (peek() == null){
 				continue;
 			}
 			
-			while (m.peek().getTime() == m.getCount()){
-				Event e = m.dequeue();
+			while (peek().getTime() == getCount()){
+				Event e =dequeue();
 				Task t = e.getwhoCalled();
                                 
 				t.fire(e.getArgument());
 				
-				if (m.peek() == null){
+				if (peek() == null){
 					break;
 				}
 			}
@@ -92,22 +92,24 @@ public void Run(int limit) {
 	}*/
 /**
  * @author wenchuan wang
+ * @param floor, robot, inventory, order, belt, inventory
  * master constructors create an instance of all component and the priority queue to store the events
  * 
  */
-public Master(){
+public Master(Visualizer visualizer,Floor floor,Belt belt,Inventory inventory,Order order, Robot robot){
 		
 		
 		count = 0;
         //all the other components probably need to know about a Master object
 		//(perhaps as a parameter in their constructors).
 		
-		rob = new Robot(this);
-		flo = new Floor(this);
-		bel = new Belts(this);
-		inv = new  Inventory(this);
-		ord = new Order(this);
-		vis = new Visualizer(this);
+		rob =  robot;
+		flo =  floor;
+		bel =  belt;
+		inv =   inventory;
+		ord =  order;
+		vis =  visualizer;
+		
 		comparator = new EventComparator();
 		eventQueue = new PriorityQueue<Event>(50,comparator);
 	}
@@ -239,12 +241,12 @@ public Master(){
 	 * mock components
 	 */
 	//assume belts event takes 1 tick
-	class Belts implements Tickable,Task{
+	class Belt implements Tickable,Task{
 			
 			Master master;
 			int currentTime;
 			
-			public Belts(Master m){
+			public Belt(Master m){
 				master = m;
 			}
 			
