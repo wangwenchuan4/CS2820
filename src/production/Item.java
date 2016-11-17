@@ -81,11 +81,24 @@ public class Item {
 		return shelf;
 	}
 	
+	public Point getLocation() {
+		return shelf.getLocation();
+	}
+	
 	/**
 	 * Updates the items shelf number.
 	 * @param newShelfNumber the new shelf number.
 	 */
 	public void changeShelf(Shelf newShelf) {
 		shelf = newShelf;
+	}
+	
+	public void removeFromShelf() {
+		shelf = null;
+	}
+
+	@Override
+	public String toString() {
+		return "Item [itemName=" + itemName + ", serialNumber=" + serialNumber + ", shelf=" + shelf + "]";
 	}
 }

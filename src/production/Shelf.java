@@ -5,23 +5,97 @@ import java.util.*;
 public class Shelf {
 
 	static final int maxItems = 5;
-	
+
 	Point homeLocation;
-	Point currentLocation; // professor used "resting" as a boolean, that may be better?
+	Point currentLocation;
+	boolean resting; // true if at home, not on robot
 	List<Item> shelfStock;
-	
+
 	/**
 	 * Initialize shelf at a given point.
+	 * 
 	 * @author Grant Gertsen
 	 * @param home
 	 */
-	public Shelf(Point home){
+	public Shelf(Point home) {
 		homeLocation = home;
 		currentLocation = home;
 		shelfStock = new ArrayList<Item>(maxItems);
 	}
+
+	/**
+	 * Check if an item is on the shelf by name
+	 * 
+	 * @author Grant Gertsen
+	 * @param itemName
+	 * @return true if that item is on the shelf
+	 */
+	public boolean hasItem(String itemName) {
+		for (Item item : shelfStock) {
+			if (item.itemName.equals(itemName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if an item is on shelf by serial number
+	 * 
+	 * @author Grant Gertsen
+	 * @param itemNumber
+	 * @return true if that item is on the shelf
+	 */
+	public boolean hasItem(int itemNumber) {
+		for (Item item : shelfStock) {
+			if (item.serialNumber == itemNumber) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
-	// Waiting on the rest until can talk to Robot
+	/**
+	 * Check if an item is on shelf by item
+	 * @author Grant Gertsen
+	 * @param item
+	 * @return true if that item is on the shelf
+	 */
+	public boolean hasItem(Item item) {
+		return hasItem(item.getSerialNumber());
+	}
+
+	/**
+	 * Add an item to the shelf
+	 * 
+	 * @author Grant Gertsen
+	 * @param item
+	 *            the item to add
+	 */
+	public void addToShelf(Item item) {
+		if (shelfStock.size() < 5) {
+			shelfStock.add(item);
+		} else {
+			System.out.println("Shelf full!");
+			// need to figure out what to do if shelf is full
+		}
+	}
 	
+	public Item removeItem(Item item) {
+		Item temp = new Item(item.getItemName(), item.getSerialNumber(), this);
+		if(shelfStock.contains(temp)) {
+			shelfStock.remove(temp);
+			return temp;
+		}
+		return null; // error
+	}
 	
+	public Point getLocation() {
+		return currentLocation;
+	}
+	
+	public Point getHomeLocation() {
+		return homeLocation;
+	}
+
 }
