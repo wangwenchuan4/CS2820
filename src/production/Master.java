@@ -44,7 +44,7 @@ public class Master {
      */
 	
 	//loop to run the simulation	
-public void Run(int limit) {
+public void run(int limit) {
 	  
    
     
@@ -106,7 +106,7 @@ public Master(Visualizer visualizer,Floor floor,Belt belt,Inventory inventory,Or
 		rob =  robot;
 		flo =  floor;
 		bel =  belt;
-		inv =   inventory;
+		inv =  inventory;
 		ord =  order;
 		vis =  visualizer;
 		

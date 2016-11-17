@@ -9,7 +9,7 @@ public class TestMaster {
    @Test
    public void test() {
        Master m=new Master();
-        m.Run(26);
+        m.run(26);
        
        
    }
