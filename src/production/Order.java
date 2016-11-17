@@ -64,7 +64,7 @@ public class Order {
 	 *		Or should it ask Inventory where that is? 
 	 */
 	public Point requestLocation(Item needed) {
-		Shelf itemLoc = needed.shelf;
+		Shelf itemLoc = needed.getShelf();
 		return itemLoc.homeLocation;
 	   }
 
@@ -98,7 +98,9 @@ public class Order {
 	 * turns the item into a OrderItem type which can be tracked whether or not it is in the bin
 	 * and then add that item to the bin
 	 */
-		//public OrderItem getItemNeeded(Shelf location, Item product) {
+	
+	/**
+	 
 	public OrderItem getItemNeeded(Item product) {
 		// Take item from Shelf 
 		// If shelf.location = not here. Then wait
@@ -110,12 +112,22 @@ public class Order {
 		//bin.add(orderProd);
 		//orderProd.setFilled();
 	}
+	*/
 	
-	//public OrderItem getItemNeeded(Item product, Shelf location) {
-		//Item itemTook = location.removeItem(product);
-		//OrderItem orderProd = new OrderItem(itemTook);
-		//return orderProd;
-	//}
+	/**
+	 * @author Casey Kolodziejczyk
+	 * @param Item
+	 * @param Shelf
+	 * @return OrderItem from Shelf
+	 * Takes an shelf and an Item and then takes the item
+	 * off of the shelf and turns it into an OrderItem
+	 */
+	public OrderItem getItemNeeded(Item product, Shelf location) {
+		Item itemTook = location.removeItem(product);
+		OrderItem orderProd = new OrderItem(itemTook);
+		
+		return orderProd;
+	}
 	
 	/** 
 	 * @author Casey Kolodziejczyk
@@ -133,7 +145,7 @@ public class Order {
 	 * Updates the status of the Item, and adds that item to the bin.
 	 */
 	public void addItem(OrderItem added) {
-		System.out.println("Picker puts " + added + " in bin for order: " + address);
+		System.out.println("Picker puts " + added + " in bin for order: " + address + "\n");
 		added.setFilled();
 		bin.itemAdd(added);
 	}
@@ -143,7 +155,7 @@ public class Order {
 	 * Simply removes an item from the bin and updates variables of the item.
 	 */
 	public void removeItem(OrderItem removed) {
-		System.out.println("Picker takes " + removed + " out of'''''''' bin for order: " + address);
+		System.out.println("Picker takes " + removed + " out of bin for order: " + address);
 		removed.inBin = false;
 		bin.itemRemove(removed);
 	}
@@ -171,7 +183,7 @@ public class Order {
 	public boolean orderFulfilled() {		
 		if (compareOrder()) {
 			setFilled();
-			System.out.println("Order : [" + address + "] has been completed!");
+			System.out.println("Order : [" + address + "] has been completed! \n");
 			return true;
 		}
 		else {
@@ -191,11 +203,15 @@ public class Order {
 	 *@author Casey Kolodziejczyk
 	 * This method runs a loop of the entire order and adds all of the items needed to be bin 
 	 */
+	
+	
+	// Maybe when Shelf is here, start to Complete order
+	
 	public void completeOrder() {
-		System.out.println("Picker starts to complete new order");
+		System.out.println("Picker starts to complete new order \n");
 		while (orderFulfilled() != true) {
-			for (int i = 0; i < order.size(); i++) {
-				addItem(getItemNeeded(order.get(i)));
+			for (int i = 0; i < order.size(); i++) {		
+				addItem(getItemNeeded(order.get(i), order.get(i).getShelf()));
 			}
 		}
 	}

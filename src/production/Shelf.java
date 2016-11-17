@@ -82,10 +82,11 @@ public class Shelf {
 	}
 	
 	public Item removeItem(Item item) {
-		Item temp = new Item(item.getItemName(), item.getSerialNumber(), this);
-		if(shelfStock.contains(temp)) {
-			shelfStock.remove(temp);
-			return temp;
+		//Item temp = new Item(item.getItemName(), item.getSerialNumber(), this);
+		if(shelfStock.contains(item)) {
+			shelfStock.remove(item);
+			System.out.println(item + " taken from shelf ");
+			return item;
 		}
 		return null; // error
 	}
@@ -98,4 +99,13 @@ public class Shelf {
 		return homeLocation;
 	}
 
+	/**
+	 * @author Casey Kolodziejczyk
+	 * Just overrides toString for testing purposes
+	 */
+	@Override
+	public String toString() {
+		return ("" + homeLocation + "");
+	}
+	
 }

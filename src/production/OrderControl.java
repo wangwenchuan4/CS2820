@@ -22,13 +22,27 @@ public class OrderControl {
 	 */
 	public OrderControl(){
 		allOrders = new HashMap<Integer, Order>();
+		Point Point1 = new Point(1,2);
+		Point Point2 = new Point(3,4);
 		
-		Item testItem1 = new Item( "Baseball", 1);
-		Item testItem2 = new Item( "Glove", 2);
-		Item testItem3 = new Item( "Bat", 3);
+		Shelf Shelf1 = new Shelf(Point1);
+		Shelf Shelf2 = new Shelf(Point2);
 		
-		Item testItem4 = new Item( "Hockey Stick", 4);
-		Item testItem5 = new Item( "Puck", 5);
+		Item testItem1 = new Item( "Baseball", 1, Shelf1);
+		Item testItem2 = new Item( "Glove", 2, Shelf1);
+		Item testItem3 = new Item( "Bat", 3, Shelf1);
+		
+		Shelf1.addToShelf(testItem1);
+		Shelf1.addToShelf(testItem2);
+		Shelf1.addToShelf(testItem3);
+		System.out.println("Shelf1 " + Shelf1);
+		
+		Item testItem4 = new Item( "Hockey Stick", 4, Shelf2);
+		Item testItem5 = new Item( "Puck", 5, Shelf2);
+		
+		Shelf2.addToShelf(testItem4);
+		Shelf2.addToShelf(testItem5);
+		
 		
 		List<Item> testItems1 = new ArrayList<Item>();
 		
@@ -122,7 +136,7 @@ public class OrderControl {
 		Order currentOrder = allOrders.entrySet().iterator().next().getValue();
 		while (currentOrder.orderFulfilled() != true) {
 			for (int i = 0; i < currentOrder.order.size(); i++) {
-				currentOrder.addItem(currentOrder.getItemNeeded(currentOrder.order.get(i)));
+				currentOrder.addItem(currentOrder.getItemNeeded(currentOrder.order.get(i), currentOrder.order.get(i).getShelf()));
 			}
 		}
 		

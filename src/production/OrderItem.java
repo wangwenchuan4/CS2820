@@ -18,8 +18,8 @@ public class OrderItem extends Item {
    * to express whether or not this item has been put
    * in the bin at the picker station
    */
-  public OrderItem(int Num, String Title) {
-	super(Num,Title);
+  public OrderItem( String Title, int Num, Shelf shelf) {
+	super(Title,Num,shelf);
 	inBin = false;
     }
   
@@ -31,7 +31,7 @@ public class OrderItem extends Item {
    * in the bin at the picker station 
    */
   public OrderItem(Item N) {
-	this(N.number,N.name);
+	this(N.itemName,N.serialNumber,N.shelf);
     }
   
   /**
@@ -51,6 +51,6 @@ public class OrderItem extends Item {
 // for Testing
 @Override
 	public String toString() {
-	      	return ("" + name + "");
+	      	return ("" + itemName + "");
 	   }
 }
