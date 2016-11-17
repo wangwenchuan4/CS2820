@@ -1,4 +1,4 @@
-package production
+package production;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,12 +23,12 @@ public class OrderControl {
 	public OrderControl(){
 		allOrders = new HashMap<Integer, Order>();
 		
-		Item testItem1 = new Item(1, "Baseball");
-		Item testItem2 = new Item(2, "Glove");
-		Item testItem3 = new Item(3, "Bat");
+		Item testItem1 = new Item( "Baseball", 1);
+		Item testItem2 = new Item( "Glove", 2);
+		Item testItem3 = new Item( "Bat", 3);
 		
-		Item testItem4 = new Item(4, "Hockey Stick");
-		Item testItem5 = new Item(5, "Puck");
+		Item testItem4 = new Item( "Hockey Stick", 4);
+		Item testItem5 = new Item( "Puck", 5);
 		
 		List<Item> testItems1 = new ArrayList<Item>();
 		

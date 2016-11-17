@@ -1,6 +1,6 @@
 package production;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 /**
  * @author Casey Kolodziejczyk
@@ -8,7 +8,8 @@ import java.util.List;
  */
 public class Order {
 	List<Item> order;  // current order to fulfill
-	List<OrderItem> bin = new ArrayList<OrderItem>();	   // bin being filled (this will be another object from belt)
+	//List<OrderItem> bin = new ArrayList<OrderItem>(); // bin being filled (this will be another object from belt)
+	Bin bin = new Bin();
 	String address;
 	String status;
 	boolean isFilled; 
@@ -56,16 +57,35 @@ public class Order {
 	
 	// Need an method that asks inventory what shelf the Item is on
 	/**
-	 *  public ____ requestLocation(Item __ )
-	 *  	- Ask inventory for the location of the Item
-	 *  	return shelf location
+	 * @author Casey Kolodziejczyk
+	 * @param Item Object
+	 * @return Shelf location for that Objects
+	 * Takes an Item an finds out which shelf that item is located on
+	 *		Or should it ask Inventory where that is? 
 	 */
+	public Point requestLocation(Item needed) {
+		Shelf itemLoc = needed.shelf;
+		return itemLoc.homeLocation;
+	   }
+
 	
 	// Also needs a method that tells the robot the shelf value from above 
+	
 	/**
-	 * public tellRobotGet(shelflocation)
-	 * - Use the location above and give it to the robot to retreive the shelf
+	 * public void tellRobotGet(Shelf needed){
+	 * 
+	 * }
+	
+	  - Use the location above and give it to the robot to retreive the shelf
+	 
+	 * 
+	 * 
 	 */
+		
+	/**
+	 * Also maybe one for get new bin
+	 */
+	
 	
 	
 	
@@ -78,6 +98,7 @@ public class Order {
 	 * turns the item into a OrderItem type which can be tracked whether or not it is in the bin
 	 * and then add that item to the bin
 	 */
+		//public OrderItem getItemNeeded(Shelf location, Item product) {
 	public OrderItem getItemNeeded(Item product) {
 		// Take item from Shelf 
 		// If shelf.location = not here. Then wait
@@ -90,12 +111,18 @@ public class Order {
 		//orderProd.setFilled();
 	}
 	
+	//public OrderItem getItemNeeded(Item product, Shelf location) {
+		//Item itemTook = location.removeItem(product);
+		//OrderItem orderProd = new OrderItem(itemTook);
+		//return orderProd;
+	//}
+	
 	/** 
 	 * @author Casey Kolodziejczyk
 	 * @return the bin
 	 * This simply returns the bin in its current state, could be used to check if enough items are in it.
 	 */
-	public List<OrderItem> getItems() {
+	public Bin getItems() {
 		// Return the Bin? or the items of the bin? 
 		return bin;
 	}
@@ -106,10 +133,9 @@ public class Order {
 	 * Updates the status of the Item, and adds that item to the bin.
 	 */
 	public void addItem(OrderItem added) {
+		System.out.println("Picker puts " + added + " in bin for order: " + address);
 		added.setFilled();
-		added.updateStatus("In the bin");
-		added.updateLocation("orderLocation");
-		bin.add(added);
+		bin.itemAdd(added);
 	}
 	/**
 	 * @author Casey Kolodziejczyk
@@ -117,10 +143,9 @@ public class Order {
 	 * Simply removes an item from the bin and updates variables of the item.
 	 */
 	public void removeItem(OrderItem removed) {
+		System.out.println("Picker takes " + removed + " out of'''''''' bin for order: " + address);
 		removed.inBin = false;
-		removed.updateStatus("Not in the bin");
-		removed.updateLocation("orderLocation");
-		bin.remove(removed);
+		bin.itemRemove(removed);
 	}
 	// If bin and order are the Same =  true, else false. 
 	/**
@@ -130,9 +155,9 @@ public class Order {
 	 * return true. else false 
 	 */
 	public boolean compareOrder() {
-	    if (order.size() != bin.size()) return false;
+	    if (order.size() != bin.binSize()) return false;
 	    for (int i=0; i<order.size(); i++) {
-	        if (order.get(i).getName() != bin.get(i).getName()) return false;
+	        if (order.get(i).getItemName() != bin.contents.get(i).getItemName()) return false;
 	    }
 	    return true;
 	}
@@ -146,6 +171,7 @@ public class Order {
 	public boolean orderFulfilled() {		
 		if (compareOrder()) {
 			setFilled();
+			System.out.println("Order : [" + address + "] has been completed!");
 			return true;
 		}
 		else {
@@ -166,6 +192,7 @@ public class Order {
 	 * This method runs a loop of the entire order and adds all of the items needed to be bin 
 	 */
 	public void completeOrder() {
+		System.out.println("Picker starts to complete new order");
 		while (orderFulfilled() != true) {
 			for (int i = 0; i < order.size(); i++) {
 				addItem(getItemNeeded(order.get(i)));
