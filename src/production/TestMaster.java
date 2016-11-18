@@ -18,11 +18,11 @@ public class TestMaster {
 		
 		Floor F = new MockFloor(rand);
 			RobotScheduler R = new RobotScheduler();
-			OrderControl O = null;
+			OrderControl O = new OrderControl();
 			Belt B = new Belt("belt1", 2, 2);
-			Inventory I = new Inventory();
+			Inventory I = new Inventory(F, new SimRandom());
 			Master m=new Master( F, R, I, O, B);
-			m.run(26);
+			m.run(30);
        
        
    }
