@@ -3,7 +3,7 @@ package production;
 import java.util.*;
 /**
  *  @author wenchuan wang
- * master class is the main program to run the simulation  
+ * master class is the main program to run the simulation by passing tick to each component
  */
 
 public class Master {
@@ -18,34 +18,33 @@ public class Master {
     /**
      * @author wenchuan wang
      * @param floor, robot, inventory, order, belt, inventory
-     * master constructors create an instance of all component and the priority queue to store the events
+     * master constructors create an instance of all component 
      * 
      */
-public Master(Floor floor,Belt belt,Inventory inventory,OrderControl order, RobotScheduler robot){
+public Master(Floor floor, RobotScheduler robot,Inventory inventory,OrderControl order, Belt belt){
 		
-		
+	    flo =  floor;
 		rob =  robot;
-		flo =  floor;
-		bel =  belt;
 		inv =  inventory;
 		ord =  order;
-		
+		bel =  belt;
 	}
    
     /**
      * @author wenchuan wang
      * @param limit 
-     * it runs the simulation in given time and remove events that happened from the queue
+     *
+     * it runs the simulation in given time limit and and pass the tick to each component
      */
 public void run(int limit) {
 	  
    int time=0; 
 		while (time<limit){
-			  
+			((Tickable)rob).tick(time); 
 			((Tickable)ord).tick(time);
 			((Tickable)inv).tick(time);
 			((Tickable)bel).tick(time);
-			((Tickable)rob).tick(time);        
+			        
 		
 			time++;
 			
