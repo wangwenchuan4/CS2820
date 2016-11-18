@@ -9,7 +9,7 @@ public class Production {
 		 		SimRandom rand = new SimRandom();
 		 		Floor F = new MockFloor(rand);
 		
-		 		Master m = new Master(V, F, B, I, O, R);
+		 		Master m = new Master(F, R, I, O, B);
 		 		m.run(26);
 		 	}
 }

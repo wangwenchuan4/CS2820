@@ -2,7 +2,7 @@ package production;
 
 import java.util.*;
 /**
- *  @author wenchuan wang
+ *  @author wenchuan wang @author Ted Herman
  * master class is the main program to run the simulation by passing tick to each component
  */
 
@@ -16,7 +16,7 @@ public class Master {
     private Belt bel;
     
     /**
-     * @author wenchuan wang
+     * @author wenchuan wang @author Ted Herman
      * @param floor, robot, inventory, order, belt, inventory
      * master constructors create an instance of all component 
      * 

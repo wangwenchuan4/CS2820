@@ -9,11 +9,20 @@ import static org.junit.Assert.*;
  */
 
 public class TestMaster {
-    
+
+		
+		
    @Test
    public void test() {
-       Master m=new Master();
-        m.run(26);
+		SimRandom rand = new SimRandom();
+		
+		Floor F = new MockFloor(rand);
+			RobotScheduler R = new RobotScheduler();
+			OrderControl O = null;
+			Belt B = new Belt("belt1", 2, 2);
+			Inventory I = new Inventory();
+			Master m=new Master( F, R, I, O, B);
+			m.run(26);
        
        
    }
