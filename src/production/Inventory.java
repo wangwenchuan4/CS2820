@@ -9,16 +9,20 @@ import java.util.*;
 public class Inventory implements Tickable {
 
 	ArrayList<Item> stock;
+	Floor floor;
 	SimRandom randNums;
+	int time;
 
 	/**
 	 * Create a list with all stocked items in it.
 	 * 
 	 * @author Grant Gertsen
 	 */
-	public Inventory() {
+	public Inventory(Floor floor, SimRandom nums) {
 		stock = new ArrayList<Item>();
-		
+		this.floor = floor;
+		randNums = nums;
+		time = 0;
 	}
 
 	/**
@@ -32,13 +36,16 @@ public class Inventory implements Tickable {
 	}
 
 	/**
-	 * Remove an item from the inventory
+	 * Remove an item from the inventory and the shelf it is on.
 	 * 
 	 * @author Grant Gertsen
 	 * @param item
 	 */
-	public void removeItem(Item item) {
+	public Item removeItem(Item item) {
+		Item removed = item.getShelf().removeItem(item);
+		System.out.println("Inventory: Removing " + item + " from shelf at " + item.getShelf());
 		stock.remove(item);
+		return removed;
 	}
 
 	/**
@@ -127,9 +134,10 @@ public class Inventory implements Tickable {
 		}
 		return null; // item not found.
 	}
-	
+
 	/**
 	 * Find what shelf an item object is on
+	 * 
 	 * @author Grant Gertsen
 	 * @param item
 	 * @return a shelf with the given item on it.
@@ -140,7 +148,7 @@ public class Inventory implements Tickable {
 
 	@Override
 	public void tick(int count) {
-		// In progress
 
+		time++;
 	}
 }

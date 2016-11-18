@@ -12,11 +12,14 @@ public class InventoryTest {
 	 */
 	@Test
 	public void addItemTest() {
-		Inventory items = new Inventory();
+		SimRandom nums = new SimRandom();
+		Floor floor = new MockFloor(nums);
+		Inventory items = new Inventory(floor, nums);
 		Shelf test = new Shelf(new Point(1,1));
 		Item i = new Item("Hat", 234, test);
 		items.addItem(i);
-		assertEquals(i,items.getItemAtIndex(0));
+		//assertEquals(i,items.getItemAtIndex(0));
+		assertEquals(i.getShelf(),test);
 	}
 	
 	/**
@@ -25,7 +28,9 @@ public class InventoryTest {
 	 */
 	@Test
 	public void itemNameNumberInStockTest() {
-		Inventory items = new Inventory();
+		SimRandom nums = new SimRandom();
+		Floor floor = new MockFloor(nums);
+		Inventory items = new Inventory(floor, nums);
 		Shelf test1 = new Shelf(new Point(1,1));
 		Shelf test2 = new Shelf(new Point(1,5));
 		Item i = new Item("Hat", 234, test2);
@@ -43,7 +48,9 @@ public class InventoryTest {
 	 */
 	@Test
 	public void serialNumberNumberInStockTest() {
-		Inventory items = new Inventory();
+		SimRandom nums = new SimRandom();
+		Floor floor = new MockFloor(nums);
+		Inventory items = new Inventory(floor, nums);
 		Shelf test1 = new Shelf(new Point(1,1));
 		Shelf test2 = new Shelf(new Point(1,5));
 		Item i = new Item("Hat", 234, test2);
@@ -61,7 +68,9 @@ public class InventoryTest {
 	 */
 	@Test
 	public void findItemTest() {
-		Inventory items = new Inventory();
+		SimRandom nums = new SimRandom();
+		Floor floor = new MockFloor(nums);
+		Inventory items = new Inventory(floor, nums);
 		Shelf shelf1 = new Shelf(new Point(1,1));
 		Shelf shelf2 = new Shelf(new Point(1,2));
 		Shelf shelf3 = new Shelf(new Point(5,4));
@@ -71,6 +80,24 @@ public class InventoryTest {
 		items.addItem(item1); items.addItem(item2);
 		Shelf temp = items.findItem(allItems[234].id);
 		assertEquals(temp,shelf2);
+	}
+	
+	@Test
+	public void removeItemTest() {
+		SimRandom nums = new SimRandom();
+		Floor floor = new MockFloor(nums);
+		Inventory items = new Inventory(floor, nums);
+		Shelf shelf1 = new Shelf(new Point(1,1));
+		Shelf shelf2 = new Shelf(new Point(1,2));
+		Shelf shelf3 = new Shelf(new Point(5,4));
+		CatItem[] allItems = CatItem.catalog;
+		Item item1 = new Item(allItems[nums.nextInt(100)],shelf2);
+		Item item2 = new Item(allItems[nums.nextInt(100)],shelf1);
+		items.addItem(item1); items.addItem(item2);
+		shelf2.showItems();
+		Item removedItem = items.removeItem(item1);
+		assertEquals(item1, removedItem);
+		
 	}
 
 }

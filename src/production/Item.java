@@ -41,6 +41,12 @@ public class Item {
 		this.itemName = itemName;
 		this.serialNumber = serialNumber;
 		this.shelf = null;
+		if(!(shelf==null)) {
+			System.out.println("Item being added to shelf!");
+			shelf.addToShelf(this);
+		} else {
+			System.out.println("Something is broken in Item!");
+		}
 	}
 	
 	/**

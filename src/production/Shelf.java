@@ -74,6 +74,7 @@ public class Shelf {
 	 */
 	public void addToShelf(Item item) {
 		if (shelfStock.size() < 5) {
+			System.out.println("Adding " + item + " to shelf!");
 			shelfStock.add(item);
 		} else {
 			System.out.println("Shelf full!");
@@ -83,11 +84,14 @@ public class Shelf {
 	
 	public Item removeItem(Item item) {
 		//Item temp = new Item(item.getItemName(), item.getSerialNumber(), this);
+		System.out.println("Trying to remove " + item + " from shelf " + item.shelf);
+		this.showItems();
 		if(shelfStock.contains(item)) {
 			shelfStock.remove(item);
 			System.out.println(item + " taken from shelf ");
 			return item;
 		}
+		System.out.println("Item removal failure");
 		return null; // error
 	}
 	
@@ -97,6 +101,13 @@ public class Shelf {
 	
 	public Point getHomeLocation() {
 		return homeLocation;
+	}
+	
+	public void showItems() {
+		System.out.println("List of items:");
+		for(Item item : shelfStock) {
+			System.out.println("Shelf has " + item);
+		}
 	}
 
 	/**
