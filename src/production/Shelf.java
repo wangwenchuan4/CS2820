@@ -74,8 +74,9 @@ public class Shelf {
 	 */
 	public void addToShelf(Item item) {
 		if (shelfStock.size() < 5) {
-			System.out.println("Adding " + item + " to shelf!");
 			shelfStock.add(item);
+			item.shelf = this;
+			System.out.println("Adding " + item + " to shelf!");
 		} else {
 			System.out.println("Shelf full!");
 			// need to figure out what to do if shelf is full
@@ -104,10 +105,11 @@ public class Shelf {
 	}
 	
 	public void showItems() {
-		System.out.println("List of items:");
+		System.out.println("\nList of items:");
 		for(Item item : shelfStock) {
 			System.out.println("Shelf has " + item);
 		}
+		System.out.println();
 	}
 
 	/**

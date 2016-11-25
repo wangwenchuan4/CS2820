@@ -92,10 +92,10 @@ public class InventoryTest {
 		Shelf shelf3 = new Shelf(new Point(5,4));
 		CatItem[] allItems = CatItem.catalog;
 		Item item1 = new Item(allItems[nums.nextInt(100)],shelf2);
-		Item item2 = new Item(allItems[nums.nextInt(100)],shelf1);
+		Item item2 = new Item(allItems[nums.nextInt(100)],shelf2);
 		items.addItem(item1); items.addItem(item2);
-		shelf2.showItems();
 		Item removedItem = items.removeItem(item1);
+		shelf2.showItems();
 		assertEquals(item1, removedItem);
 		
 	}

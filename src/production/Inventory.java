@@ -32,6 +32,7 @@ public class Inventory implements Tickable {
 	 * @param item
 	 */
 	public void addItem(Item item) {
+		System.out.println("Adding item " + item + " to shelf at " + item.shelf);
 		stock.add(item);
 	}
 
