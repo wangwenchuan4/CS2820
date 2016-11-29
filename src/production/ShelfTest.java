@@ -20,7 +20,7 @@ public class ShelfTest {
 		items.addItem(item1); items.addItem(item2);
 		shelf1.addToShelf(item1);
 		shelf1.showItems();
-		assertEquals(true,shelf1.hasItem(item1));
+		assertEquals(true, shelf1.hasItem(item1));
 	}
 	
 	@Test

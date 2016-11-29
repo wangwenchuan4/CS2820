@@ -153,7 +153,7 @@ public class Inventory implements Tickable {
 	 * 
 	 * @author Grant Gertsen
 	 * @param itemNumber
-	 * @return a shelf with the given item on it.
+	 * @return a shelf with the given item on it
 	 */
 	public Shelf findItem(int itemNumber) {
 		for (Item item : stock) {
