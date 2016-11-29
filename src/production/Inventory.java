@@ -14,15 +14,25 @@ public class Inventory implements Tickable {
 	int time;
 
 	/**
-	 * Create a list with all stocked items in it.
+	 * Create a list with all stocked items in it. Used the professor's item
+	 * generation
 	 * 
 	 * @author Grant Gertsen
+	 * @author Ted Herman
 	 */
 	public Inventory(Floor floor, SimRandom nums) {
 		stock = new ArrayList<Item>();
 		this.floor = floor;
 		randNums = nums;
 		time = 0;
+		System.out.println("Generating the inventory!");
+		for (int i = 0; i < CatItem.catalog.length; i++) {
+			Item n = new Item(CatItem.catalog[i]);
+			Point p = floor.randomInShelfArea();
+			Cell c = floor.getCell(p);
+			n.changeShelf((Shelf) c.getContents());
+			this.addItem(n);
+		}
 	}
 
 	/**
@@ -85,8 +95,26 @@ public class Inventory implements Tickable {
 		return count;
 	}
 
+	/**
+	 * The number of an item in stock
+	 * 
+	 * @author Grant Gertsen
+	 * @param item
+	 * @return how many of this item is in stock
+	 */
 	public int numberInStock(Item item) {
 		return numberInStock(item.getSerialNumber());
+	}
+
+	/**
+	 * The total number of items in stock
+	 * 
+	 * @author Grant Gertsen
+	 * @return the total number of items in stock
+	 */
+	public int stockAmount() {
+		System.out.println("There are " + stock.size() + " items in stock");
+		return stock.size();
 	}
 
 	/**
@@ -149,7 +177,7 @@ public class Inventory implements Tickable {
 
 	@Override
 	public void tick(int count) {
-
+		this.stockAmount();
 		time++;
 	}
 }
