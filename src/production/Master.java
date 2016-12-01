@@ -42,7 +42,7 @@ public Master(Floor floor, RobotScheduler robot,Inventory inventory,OrderControl
 public void run(int limit) {
 	  
    int time=0; 
-		while (time<limit){
+		while (time<=limit){
 			((Tickable)rob).tick(time); 
 			((Tickable)ord).tick(time);
 			((Tickable)inv).tick(time);

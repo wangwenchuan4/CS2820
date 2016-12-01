@@ -14,16 +14,16 @@ public class TestMaster {
 		
    @Test
    public void test() {
-		SimRandom rand = new SimRandom();
-		//RobotScheduler robot,Inventory inventory,OrderControl
+		
 		Floor F = new Floor();
 		RobotScheduler R = new RobotScheduler();
-		OrderControl O = new OrderControl();
-			Belt B = new Belt();
-			Inventory I = new Inventory();
-			Visualizer V= new Visualizer();
-			Master m=new Master( F, R, I, O, B, V);
-			m.run(30);
+		OrderControl O = new OrderControl();	
+		Belt B = new Belt();
+		Inventory I = new Inventory();
+		Visualizer V= new Visualizer();
+		Master m=new Master( F, R, I, O, B, V);
+		
+		m.run(30);
        
        
    }
@@ -32,7 +32,7 @@ public class TestMaster {
    
    public class Master {
 	    
-		
+
 		private RobotScheduler rob;
 		private Floor flo;
 		private OrderControl ord;
@@ -48,6 +48,8 @@ public class TestMaster {
 	     */
 	public Master(Floor floor, RobotScheduler robot,Inventory inventory,OrderControl order, Belt belt, Visualizer visualizer){
 			
+		//count =0;
+		
 		    flo =  floor;
 			rob =  robot;
 			inv =  inventory;
@@ -68,7 +70,7 @@ public class TestMaster {
 	public void run(int limit) {
 		  
 	   int time=0; 
-			while (time<limit){
+			while (time<=limit){
 				((Tickable)flo).tick(time); 
 				((Tickable)rob).tick(time); 
 				((Tickable)ord).tick(time);
@@ -76,6 +78,7 @@ public class TestMaster {
 				((Tickable)bel).tick(time);
 				((Tickable)vis).tick(time);
 			
+				
 				time++;
 				
 			}//end of while loop  
@@ -101,7 +104,8 @@ public class TestMaster {
 		
 		public void tick(int count){
 			currentTime = count;
-			
+			if (currentTime==5)
+				System.out.println("Belt event happened at: " + currentTime);
 		}
 		
 		public void fire(Object arg){
@@ -128,7 +132,8 @@ public class TestMaster {
 		
 		public void tick(int count){
 			currentTime = count;
-			
+			if(currentTime==2)
+			System.out.println("Floor event happened at: "+currentTime);
 		}
 		
 		public void fire(Object arg){
@@ -154,7 +159,8 @@ public class Inventory implements Tickable,Task{
 	
 	public void tick(int count){
 		currentTime = count;
-		
+		if (currentTime==10)
+			System.out.println("Inventory event happened at: "+currentTime);
 	}
 	
 	public void fire(Object arg){
@@ -181,7 +187,8 @@ public class OrderControl implements Tickable,Task{
 	
 	public void tick(int count){
 		currentTime = count;
-		
+		if (currentTime==15)
+			System.out.println("OrderControl event happened at: "+currentTime);
 	}
 	
 	public void fire(Object arg){
@@ -213,7 +220,8 @@ public class RobotScheduler implements Tickable,Task {
   
   public void tick(int count){
 			currentTime = count;
-			
+			if (currentTime==28)
+			System.out.println("Robot event happened at: "+currentTime);
 		}
 		
 		
@@ -249,6 +257,8 @@ public class Visualizer implements Tickable,Task{
 		
 		public void tick(int count){
 			currentTime = count;
+			if (currentTime==30)
+			System.out.println("Visualizer event happened at: "+currentTime);
 			
 		}
 		
