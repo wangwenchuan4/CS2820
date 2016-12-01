@@ -83,6 +83,12 @@ public class Shelf {
 		}
 	}
 	
+	/**
+	 * Removes an item from the shelf (and updates item's shelf value)
+	 * @author Grant Gertsen
+	 * @param item
+	 * @return pops the item
+	 */
 	public Item removeItem(Item item) {
 		//Item temp = new Item(item.getItemName(), item.getSerialNumber(), this);
 		System.out.println("Trying to remove " + item + " from shelf " + item.shelf);
@@ -90,17 +96,26 @@ public class Shelf {
 		if(shelfStock.contains(item)) {
 			shelfStock.remove(item);
 			System.out.println(item + " taken from shelf ");
-			item.changeShelf(null);
+			item.changeShelf(null); 
 			return item;
 		}
 		System.out.println("Item removal failure");
 		return null; // error
 	}
 	
+	/**
+	 * Gets current location
+	 * @author Grant Gertsen
+	 * @return shelf location
+	 */
 	public Point getLocation() {
 		return currentLocation;
 	}
-	
+	/**
+	 * Where the shelf was initialized at
+	 * @author Grant Gertsen
+	 * @return the home location
+	 */
 	public Point getHomeLocation() {
 		return homeLocation;
 	}
