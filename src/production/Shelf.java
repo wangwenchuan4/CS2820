@@ -90,6 +90,7 @@ public class Shelf {
 		if(shelfStock.contains(item)) {
 			shelfStock.remove(item);
 			System.out.println(item + " taken from shelf ");
+			item.changeShelf(null);
 			return item;
 		}
 		System.out.println("Item removal failure");
