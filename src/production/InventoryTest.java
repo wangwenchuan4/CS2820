@@ -137,5 +137,20 @@ public class InventoryTest {
 
 		assertEquals(number, 5 + allItems.length);
 	}
+	
+	@Test
+	public void onShelfTest() {
+		System.out.println("ON SHELF TEST");
+		SimRandom nums = new SimRandom();
+		Floor floor = new MockFloor(nums);
+		Inventory items = new Inventory(floor, nums);
+		Shelf shelf = items.getStock()[0].getShelf();
+		Item[] shelfItems = items.onShelf(shelf);
+		System.out.println("FAKE LIST OF ITEMS");
+		for(Item i : shelfItems) {
+			System.out.println(i);
+		}
+		shelf.showItems();
+	}
 
 }

@@ -116,6 +116,15 @@ public class Inventory implements Tickable {
 		System.out.println("There are " + stock.size() + " items in stock");
 		return stock.size();
 	}
+	
+	/**
+	 * Getterf for the stock
+	 * @return
+	 */
+	public Item[] getStock()  {
+		Item[] temp = new Item[0];
+		return stock.toArray(temp);
+	}
 
 	/**
 	 * Test method
@@ -198,7 +207,7 @@ public class Inventory implements Tickable {
 	@Override
 	public void tick(int count) {
 		this.stockAmount();
-		time++;
+		time = count;
 	}
 }
 

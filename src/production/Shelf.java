@@ -99,7 +99,7 @@ public class Shelf {
 			item.changeShelf(null); 
 			return item;
 		}
-		System.out.println("Item removal failure");
+		System.out.println("Item not on this shelf");
 		return null; // error
 	}
 	
@@ -125,7 +125,7 @@ public class Shelf {
 	}
 	
 	public void showItems() {
-		System.out.println("\nList of items:");
+		System.out.println("\nSHELF STOCK:");
 		for(Item item : shelfStock) {
 			System.out.println("Shelf has " + item);
 		}

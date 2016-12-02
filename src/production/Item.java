@@ -98,7 +98,6 @@ public class Item {
 	 * @return the shelf the item is on
 	 */
 	public Shelf getShelf() {
-		System.out.println("Removing " + this + " from shelf at " + this.shelf);
 		return shelf;
 	}
 
