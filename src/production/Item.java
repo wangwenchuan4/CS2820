@@ -19,7 +19,7 @@ public class Item {
 		this.serialNumber = serialNumber;
 		this.shelf = shelf;
 		if (!(shelf == null)) {
-			System.out.println("Item being added to shelf!");
+			System.out.println("Item being added to shelf!" + this.shelf);
 			shelf.addToShelf(this);
 		}
 	}
@@ -53,10 +53,6 @@ public class Item {
 		this.itemName = itemName;
 		this.serialNumber = serialNumber;
 		this.shelf = null;
-		if (!(shelf == null)) {
-			System.out.println("Item being added to shelf!");
-			shelf.addToShelf(this);
-		}
 	}
 
 	/**
@@ -108,7 +104,9 @@ public class Item {
 	 *            the new shelf number.
 	 */
 	public void changeShelf(Shelf newShelf) {
+		//System.out.print(this.itemName + " is now at ");
 		shelf = newShelf;
+		//System.out.println(this.shelf.getHomeLocation());
 	}
 
 	@Override

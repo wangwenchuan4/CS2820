@@ -54,9 +54,10 @@ public class Shelf {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Check if an item is on shelf by item
+	 * 
 	 * @author Grant Gertsen
 	 * @param item
 	 * @return true if that item is on the shelf
@@ -82,63 +83,75 @@ public class Shelf {
 			// need to figure out what to do if shelf is full
 		}
 	}
-	
+
 	/**
 	 * Removes an item from the shelf (and updates item's shelf value)
+	 * 
 	 * @author Grant Gertsen
 	 * @param item
 	 * @return pops the item
 	 */
 	public Item removeItem(Item item) {
-		//Item temp = new Item(item.getItemName(), item.getSerialNumber(), this);
+		// Item temp = new Item(item.getItemName(), item.getSerialNumber(),
+		// this);
 		System.out.println("Trying to remove " + item + " from shelf " + item.shelf);
 		this.showItems();
-		if(shelfStock.contains(item)) {
+		if (shelfStock.contains(item)) {
 			shelfStock.remove(item);
 			System.out.println(item + " taken from shelf ");
-			item.changeShelf(null); 
+			item.changeShelf(null);
 			return item;
 		}
 		System.out.println("Item not on this shelf");
 		return null; // error
 	}
-	
+
 	/**
 	 * Gets current location
+	 * 
 	 * @author Grant Gertsen
 	 * @return shelf location
 	 */
 	public Point getLocation() {
 		return currentLocation;
 	}
+
 	/**
 	 * Where the shelf was initialized at
+	 * 
 	 * @author Grant Gertsen
 	 * @return the home location
 	 */
 	public Point getHomeLocation() {
 		return homeLocation;
 	}
-	
+	/**
+	 * Returns true if at home
+	 * @author Grant Gertsen
+	 * @return true if at home
+	 */
 	public boolean isHome() {
 		return (homeLocation == currentLocation);
 	}
-	
+
+	/**
+	 * Prints out all items on the shelf
+	 * @author Grant Gertsen
+	 */
 	public void showItems() {
 		System.out.println("\nSHELF STOCK:");
-		for(Item item : shelfStock) {
+		for (Item item : shelfStock) {
 			System.out.println("Shelf has " + item);
 		}
 		System.out.println();
 	}
 
 	/**
-	 * @author Casey Kolodziejczyk
-	 * Just overrides toString for testing purposes
+	 * @author Casey Kolodziejczyk Just overrides toString for testing purposes
 	 */
 	@Override
 	public String toString() {
 		return ("" + homeLocation + "");
 	}
-	
+
 }

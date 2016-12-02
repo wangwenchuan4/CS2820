@@ -9,6 +9,7 @@ import java.util.*;
 public class Inventory implements Tickable {
 
 	ArrayList<Item> stock;
+	ArrayList<Item> orderedItems;
 	Floor floor;
 	SimRandom randNums;
 	int time;
@@ -22,16 +23,20 @@ public class Inventory implements Tickable {
 	 */
 	public Inventory(Floor floor, SimRandom nums) {
 		stock = new ArrayList<Item>();
+		orderedItems = new ArrayList<Item>();
 		this.floor = floor;
 		randNums = nums;
 		time = 0;
 		System.out.println("Generating the inventory!");
-		for (int i = 0; i < CatItem.catalog.length; i++) {
-			Item n = new Item(CatItem.catalog[i]);
-			Point p = floor.randomInShelfArea();
-			Cell c = floor.getCell(p);
-			n.changeShelf((Shelf) c.getContents());
-			this.addItem(n);
+		for (int j = 0; j < CatItem.catalog.length; j++) {
+			int times = 1 + randNums.nextInt(4);
+			for (int i = 0; i < times; i++) {
+				Item n = new Item(CatItem.catalog[i]);
+				Point p = floor.randomInShelfArea();
+				Cell c = floor.getCell(p);
+				n.changeShelf((Shelf) c.getContents());
+				this.addItem(n);
+			}
 		}
 	}
 
@@ -42,7 +47,8 @@ public class Inventory implements Tickable {
 	 * @param item
 	 */
 	public void addItem(Item item) {
-		//System.out.println("Adding item " + item + " to shelf at " + item.shelf);
+		// System.out.println("Adding item " + item + " to shelf at " +
+		// item.shelf);
 		stock.add(item);
 	}
 
@@ -56,6 +62,7 @@ public class Inventory implements Tickable {
 		Item removed = item.getShelf().removeItem(item);
 		System.out.println("Inventory: Removing " + item + " from shelf at " + item.getShelf());
 		stock.remove(item);
+		this.orderedItem(item);
 		return removed;
 	}
 
@@ -116,12 +123,13 @@ public class Inventory implements Tickable {
 		System.out.println("There are " + stock.size() + " items in stock");
 		return stock.size();
 	}
-	
+
 	/**
-	 * Getterf for the stock
+	 * Getter for the stock
+	 * 
 	 * @return
 	 */
-	public Item[] getStock()  {
+	public Item[] getStock() {
 		Item[] temp = new Item[0];
 		return stock.toArray(temp);
 	}
@@ -193,21 +201,53 @@ public class Inventory implements Tickable {
 		return new Item(CatItem.catalog[n]);
 	}
 
+	/**
+	 * Gets an item array of all items on the shelf
+	 * 
+	 * @author Ted Herman
+	 * @param shelf
+	 * @return
+	 */
 	public Item[] onShelf(Shelf shelf) {
 		List<Item> scan = new ArrayList<Item>();
 		Item[] returnpattern = new Item[0];
 		for (Item e : stock) {
 			if (!(e.getShelf().getHomeLocation()).equals(shelf.getHomeLocation()))
 				continue;
+			System.out.println(e + " is on " + shelf);
 			scan.add(e);
 		}
 		return scan.toArray(returnpattern);
 	}
 
+	/**
+	 * Keeps track of items that have been ordered
+	 * 
+	 * @author Grant Gertsen
+	 * @param item
+	 *            the item ordered
+	 */
+	public void orderedItem(Item item) {
+		orderedItems.add(item);
+	}
+
+	public void restock() {
+		System.out.println("Restocking " + orderedItems.size() + " items!");
+		for (Item item : orderedItems) {
+			Item n = new Item(item.getItemName(), item.getSerialNumber());
+			Point p = floor.randomInShelfArea();
+			Cell c = floor.getCell(p);
+			n.changeShelf((Shelf) c.getContents());
+			this.addItem(n);
+		}
+	}
+
 	@Override
 	public void tick(int count) {
-		this.stockAmount();
 		time = count;
+		if (time % 10 == 0) {
+			restock();
+		}
 	}
 }
 

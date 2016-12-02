@@ -118,6 +118,7 @@ public class InventoryTest {
 		SimRandom nums = new SimRandom();
 		Floor floor = new MockFloor(nums);
 		Inventory items = new Inventory(floor, nums);
+		int stockSize = items.stockAmount();
 		Shelf shelf1 = new Shelf(new Point(1, 1));
 		Shelf shelf2 = new Shelf(new Point(1, 2));
 		Shelf shelf3 = new Shelf(new Point(5, 4));
@@ -135,7 +136,7 @@ public class InventoryTest {
 		items.addItem(item4);
 		int number = items.stockAmount();
 
-		assertEquals(number, 5 + allItems.length);
+		assertEquals(number, 5 + stockSize);
 	}
 	
 	@Test
