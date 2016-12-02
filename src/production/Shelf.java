@@ -120,6 +120,10 @@ public class Shelf {
 		return homeLocation;
 	}
 	
+	public boolean isHome() {
+		return (homeLocation == currentLocation);
+	}
+	
 	public void showItems() {
 		System.out.println("\nList of items:");
 		for(Item item : shelfStock) {
