@@ -16,7 +16,7 @@ public class Master {
     private Belt bel;
     
     /**
-     * @author wenchuan wang @author Ted Herman
+     * @author wenchuan wang 
      * @param floor, robot, inventory, order, belt, inventory
      * master constructors create an instance of all component 
      * 
@@ -43,10 +43,11 @@ public void run(int limit) {
 	  
    int time=0; 
 		while (time<=limit){
-			((Tickable)rob).tick(time); 
-			((Tickable)ord).tick(time);
-			((Tickable)inv).tick(time);
-			((Tickable)bel).tick(time);
+			
+			rob.tick(time); 
+			ord.tick(time);
+			inv.tick(time);
+			bel.tick(time);
 			        
 		
 			time++;
