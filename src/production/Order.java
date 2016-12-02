@@ -6,8 +6,13 @@ import java.util.List;
  * @author Casey Kolodziejczyk
  * This is the Class for Orders that will need to be satisfied
  */
-public class Order {
-	List<Item> order;  // current order to fulfill
+public class Order implements Picker {
+	
+	private Inventory I;
+	private RobotScheduler R;
+	private Belt B;
+	
+	List<OrderItem> order;  // current order to fulfill
 	//List<OrderItem> bin = new ArrayList<OrderItem>(); // bin being filled (this will be another object from belt)
 	Bin bin = new Bin();
 	String address;
@@ -23,7 +28,7 @@ public class Order {
 	 * @param num
 	 * Creates an Order object using these three parameters
 	 */
-	public Order(List<Item> items, String addr, int num) {
+	public Order(List<OrderItem> items, String addr, int num) {
 		isFilled = false;
 		order = items;
 		address = addr;
@@ -35,7 +40,7 @@ public class Order {
 	 * @param addr
 	 * Creates an Order Object without the number parameter
 	 */
-	public Order(List<Item> items, String addr) {
+	public Order(List<OrderItem> items, String addr) {
 		isFilled = false;
 		order = items;
 		address = addr;
@@ -54,8 +59,6 @@ public class Order {
 	 */
 	public void setFilled() { isFilled = true; }
 	
-	
-	// Need an method that asks inventory what shelf the Item is on
 	/**
 	 * @author Casey Kolodziejczyk
 	 * @param Item Object
@@ -69,26 +72,23 @@ public class Order {
 	   }
 
 	
-	// Also needs a method that tells the robot the shelf value from above 
+	
+	public void tellRobotGet(Shelf needed){
+		//Robot.goTo(needed.currentLocation);
+	  }
+	
+	
+	
 	
 	/**
-	 * public void tellRobotGet(Shelf needed){
-	 * 
-	 * }
-	
-	  - Use the location above and give it to the robot to retreive the shelf
-	 
-	 * 
-	 * 
+	 * @author Casey Kolodziejczyk
+	 * This simply creates a new bin. Will be called 
+	 * each time a new order is started.
 	 */
-		
-	/**
-	 * Also maybe one for get new bin
-	 */
-	
-	
-	
-	
+	public void getNewBin(){
+		bin = new Bin();
+	}
+
 	/**
 	 * @author Casey Kolodziejczyk
 	 * @param product  (An Item)
@@ -123,7 +123,18 @@ public class Order {
 	 * off of the shelf and turns it into an OrderItem
 	 */
 	public OrderItem getItemNeeded(Item product, Shelf location) {
+		System.out.println("\n Orders tells robot to get shelf at point: " + location);
+		tellRobotGet(location);
+		
+		//Maybe a while statement instead.
+		//if Robot state is 3 (at picker) then remove items from shelf{
+		//else{ waiting for shelf to arrive}
+		//}
+		
+		System.out.println("\n Picker removes " + product + " from shelf for order: " + address + "\n");
 		Item itemTook = location.removeItem(product);
+		// Inventory method
+		
 		OrderItem orderProd = new OrderItem(itemTook);
 		
 		return orderProd;
@@ -145,9 +156,10 @@ public class Order {
 	 * Updates the status of the Item, and adds that item to the bin.
 	 */
 	public void addItem(OrderItem added) {
-		System.out.println("Picker puts " + added + " in bin for order: " + address + "\n");
+		System.out.println("\n Picker puts " + added + " in bin for order: " + address);
 		added.setFilled();
 		bin.itemAdd(added);
+		System.out.println("\n Bin now consists of: " + bin.contents + "\n");
 	}
 	/**
 	 * @author Casey Kolodziejczyk
@@ -183,7 +195,7 @@ public class Order {
 	public boolean orderFulfilled() {		
 		if (compareOrder()) {
 			setFilled();
-			System.out.println("Order : [" + address + "] has been completed! \n");
+			//System.out.println("Order : [" + address + "] has been completed! \n");
 			return true;
 		}
 		else {
@@ -208,15 +220,35 @@ public class Order {
 	// Maybe when Shelf is here, start to Complete order
 	
 	public void completeOrder() {
-		System.out.println("Picker starts to complete new order \n");
+		System.out.println("\n Picker starts to complete new order ");
+		System.out.println("\n Picker grabs a new bin for the order \n");
+		getNewBin();
 		while (orderFulfilled() != true) {
 			for (int i = 0; i < order.size(); i++) {		
 				addItem(getItemNeeded(order.get(i), order.get(i).getShelf()));
+				//addItem(getItemNeeded(order.get(i), I.findItem(order.get(i))));
+							/// Call findItem()v 
 			}
 		}
+		if (orderFulfilled() == true){
+			System.out.println(" Order : [" + address + "] has been completed!");
+			System.out.println("\n Picker now places the bin for " + "[" + address + "]" + " on the belt");
+			//B.addBin(bin);	
+		}
 	}
-	
-	
+	/**
+	 * @author Ted Herman
+	 * @param Robot
+	 * @param Shelf
+	 * Used to notify other sections when the robot has 
+	 * arrived to the picker with the shelf needed
+	 */
+	@Override
+	public void notify(Robot r, Shelf s) {
+		// I don't know if i need this
+		// Shelf location is now picker?
+		// Robot location is now picker?
+		}
 	/**
 	 * @author Casey Kolodziejczyk
 	 * For testing and printing out Order objects
@@ -225,4 +257,5 @@ public class Order {
 	public String toString() {
 	      	return ("" + order + "");
 	   }
+	
 }
