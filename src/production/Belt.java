@@ -1,7 +1,7 @@
 
 package production;
 
-import java.util.ArrayList;
+import java.util.*;
 /**
  * TODO - Need Packer method.
  * @author Peter Nelson
@@ -12,16 +12,19 @@ public class Belt implements Tickable {
 	
 	//double speed;
 	double beltWidth;
+	Floor F;
+	List<Point> beltArea;
 	int beltCapacity;  //determined by belt length -- does floor determine this?
 	ArrayList<Bin> currentBins = new ArrayList<Bin>();
 	
 	String beltID;
 	
 	
-	public Belt(String beltID, int beltCapacity, double beltWidth) {
+	public Belt(String beltID, int beltCapacity, double beltWidth, Floor F) {
 		this.beltID = beltID;
-		this.beltCapacity = beltCapacity;
-		this.beltWidth = beltWidth;
+		//this.beltCapacity = beltCapacity;
+		this.F = F;
+		beltArea = F.getBeltArea();
 	}
 
 	/**
