@@ -13,7 +13,10 @@ public class BeltTester {
 	@Test
 	public void testBeltCapacity() {
 		Order order = null;
-		Belt beltTester = new Belt("belt1", 2, 2);
+ 		SimRandom rand = new SimRandom();
+
+		Floor F = new MockFloor(rand);
+		Belt beltTester = new Belt(F);
 		Bin bin = new Bin();
 		bin.setOrder(order);
 		beltTester.addBin(bin);
