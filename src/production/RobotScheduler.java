@@ -61,7 +61,7 @@ public class RobotScheduler implements Tickable{
 		// these are cases of reaching goal in path
 		case Robot.pickershelfbound:
 		   r.shelf.pickup();  // robot claims this shelf
-		   assert !r.shelf.onFloor();
+		   assert !r.shelf.isResting();
 		   r.destination = F.getPath(r.location,F.getPicker());
 		   r.state = Robot.pickerbound;  // now heading to Picker
 		   break;
@@ -106,7 +106,7 @@ public class RobotScheduler implements Tickable{
 	   * "callback" object to notify Orders at some later tick()
 	   */
 	  public void requestShelf(Shelf s, Picker p) { 
-		Point target = s.home; // where Shelf sits
+		Point target = s.getHomeLocation(); // where Shelf sits
 		Robot robot = findRobot(); // get some idle robot
 		robot.destination = F.getPath(robot.location,target);
 		robot.state = Robot.pickershelfbound;
@@ -128,7 +128,7 @@ public class RobotScheduler implements Tickable{
 	   */
 	  public void returnShelf(Robot r) { 
 		assert r.state == Robot.atpicker;
-		r.destination = F.getPath(r.location,r.shelf.home);
+		r.destination = F.getPath(r.location,r.shelf.getHomeLocation());
 		r.state = Robot.afterpickershelfbound;
 	    }
 	  /**

@@ -8,6 +8,7 @@ public class Shelf {
 	Point currentLocation;
 	boolean resting; // true if at home, not on robot
 //	List<Item> shelfStock;
+	
 
 	/**
 	 * Initialize shelf at a given point.
@@ -57,6 +58,14 @@ public class Shelf {
 
 	public void putdown() {
 		resting = true;
+	}
+	/**
+	 * needed a method to ask if the shelf is resting for RobotScheduler
+	 * @author Andrew Marburg
+	 * @return true if shelf is resting
+	 */
+	public boolean isResting(){
+		return resting;
 	}
 	/**
 	 * Prints out all items on the shelf
