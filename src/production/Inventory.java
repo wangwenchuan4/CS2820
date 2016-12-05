@@ -68,6 +68,7 @@ public class Inventory implements Tickable {
 
 	/**
 	 * No longer in use: was used to fix a previous bug
+	 * 
 	 * @author Grant Gertsen
 	 */
 	public void shelveItems() {
@@ -220,7 +221,15 @@ public class Inventory implements Tickable {
 		orderedItems.add(item);
 	}
 
+	/**
+	 * Restocks items that were ordered, or adds them if they weren't in stock.
+	 * 
+	 * @author Grant Gertsen
+	 */
 	public void restock() {
+		if (orderedItems.size() == 0) {
+			return;
+		}
 		System.out.println("Restocking " + orderedItems.size() + " items!");
 		for (Item item : orderedItems) {
 			Item n = new Item(item.getItemName(), item.getSerialNumber());
@@ -231,22 +240,36 @@ public class Inventory implements Tickable {
 		}
 	}
 
+	/**
+	 * Debugging method to show all items in stock
+	 * @author Grant Gertsen
+	 */
 	public void printItems() {
 		for (Item item : stock) {
 			System.out.println(item + " on shelf " + item.getShelf());
 		}
 	}
 
+	/**
+	 * @author Grant Gertsen
+	 * Only "active" thing for inventory is to restock every so often
+	 * We are currently not using a "dock", just automatic generation.
+	 */
 	@Override
 	public void tick(int count) {
 		time = count;
 		shelveItems();
-		if (time % 10 == 0) {
+		if (time % 500 == 0) {
 			restock();
 		}
 	}
 }
 
+/**
+ * A catalog of items that can be used
+ * @author Ted Herman
+ *
+ */
 class CatItem {
 	int id;
 	String description;
