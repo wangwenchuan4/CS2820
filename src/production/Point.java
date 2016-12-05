@@ -34,7 +34,7 @@ public class Point {
    */
   Point below() {
     int newx = x + 1;
-    if (newx >= MockFloor.warehousedepth) return null;
+    if (newx >= MockFloor.warehousewidth) return null;
     return new Point(newx,y);
     }
   /** 
@@ -43,7 +43,7 @@ public class Point {
    */
   Point right() {
     int newy = y + 1;
-    if (newy >= MockFloor.warehousewidth) return null;
+    if (newy >= MockFloor.warehousedepth) return null;
     return new Point(x,newy);
     }
   /** 
