@@ -24,7 +24,7 @@ public class Robot implements Tickable {
   
         public List<Point> destination;
         public Point location;
-        public Shelf holdingShelf;
+        public Shelf shelf;
         public Point shelfLocation;
         public int state;
         public Picker picker;
@@ -33,7 +33,7 @@ public class Robot implements Tickable {
 		public Robot(Point startingLocation){
 			destination = null;
 			location = startingLocation;
-			holdingShelf = null;
+			shelf = null;
             state = idle;
             shelfLocation = null;
             picker = null;
@@ -75,7 +75,7 @@ public class Robot implements Tickable {
                  * method to see which shelf the robot is currently holding
                  */
 		public Shelf hasShelf(){
-			return holdingShelf;
+			return shelf;
 		}
                 /**
                  * 
