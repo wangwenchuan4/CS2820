@@ -10,7 +10,7 @@ public class Production {
 		 		Floor F = new MockFloor(rand);
 		 		RobotScheduler R = new RobotScheduler();
 		 		OrderControl O = new OrderControl();
-		 		Belt B = new Belt("belt1", 2, 2);
+		 		Belt B = new Belt(F);
 		 		Inventory I = new Inventory(F, new SimRandom());
 		 		
 		 		Master m = new Master(F, R, I, O, B);

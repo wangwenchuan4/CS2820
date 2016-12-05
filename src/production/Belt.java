@@ -11,17 +11,18 @@ import java.util.*;
 public class Belt implements Tickable {
 	
 	//double speed;
-	double beltWidth;
+	//double beltWidth;
 	Floor F;
 	List<Point> beltArea;
-	int beltCapacity;  //determined by belt length -- does floor determine this?
+	//int beltCapacity;  //determined by belt length -- does floor determine this?
 	ArrayList<Bin> currentBins = new ArrayList<Bin>();
+	Bin newBin;
 	
 	String beltID;
 	
 	
-	public Belt(String beltID, int beltCapacity, double beltWidth, Floor F) {
-		this.beltID = beltID;
+	public Belt(Floor F) {
+		//this.beltID = beltID;
 		//this.beltCapacity = beltCapacity;
 		this.F = F;
 		beltArea = F.getBeltArea();
@@ -76,6 +77,10 @@ public class Belt implements Tickable {
 		//remove bin
 	}
 
+	public Bin getBin() {
+		newBin = new Bin();
+		return newBin;
+	}
 	/**
 	 * Implemented from Tickable.  This is what will be used to move the belt.
 	 */
