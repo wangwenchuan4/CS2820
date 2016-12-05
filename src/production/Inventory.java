@@ -31,7 +31,7 @@ public class Inventory implements Tickable {
 		for (int j = 0; j < CatItem.catalog.length; j++) {
 			int times = 1 + randNums.nextInt(4);
 			for (int i = 0; i < times; i++) {
-				Item n = new Item(CatItem.catalog[i]);
+				Item n = new Item(CatItem.catalog[j]);
 				Point p = floor.randomInShelfArea();
 				Cell c = floor.getCell(p);
 				n.changeShelf((Shelf) c.getContents());
@@ -59,11 +59,21 @@ public class Inventory implements Tickable {
 	 * @param item
 	 */
 	public Item removeItem(Item item) {
-		Item removed = item.getShelf().removeItem(item);
+		Item removed = new Item(item.getItemName(), item.getSerialNumber());
 		System.out.println("Inventory: Removing " + item + " from shelf at " + item.getShelf());
 		stock.remove(item);
 		this.orderedItem(item);
 		return removed;
+	}
+
+	public void shelveItems() {
+		for (Item item : stock) {
+			if (item.getShelf() == null) {
+				Point p = floor.randomInShelfArea();
+				Cell c = floor.getCell(p);
+				item.changeShelf((Shelf) c.getContents());
+			}
+		}
 	}
 
 	/**
@@ -147,39 +157,39 @@ public class Inventory implements Tickable {
 		return item;
 	}
 
-	/**
-	 * Finds a shelf that has a given item on it (to be called by Orders I
-	 * believe)
-	 * 
-	 * @author Grant Gertsen
-	 * @param itemName
-	 *            the name of the item you're looking for.
-	 * @return a shelf where the item is.
-	 */
-	public Shelf findItem(String itemName) {
-		for (Item item : stock) {
-			if (item.getItemName().equals(itemName)) {
-				return item.getShelf();
-			}
-		}
-		return null; // item not found.
-	}
-
-	/**
-	 * Finds what shelf a given item is on based off of its serial number.
-	 * 
-	 * @author Grant Gertsen
-	 * @param itemNumber
-	 * @return a shelf with the given item on it
-	 */
-	public Shelf findItem(int itemNumber) {
-		for (Item item : stock) {
-			if (item.getSerialNumber() == itemNumber) {
-				return item.getShelf();
-			}
-		}
-		return null; // item not found.
-	}
+	// /**
+	// * Finds a shelf that has a given item on it (to be called by Orders I
+	// * believe)
+	// *
+	// * @author Grant Gertsen
+	// * @param itemName
+	// * the name of the item you're looking for.
+	// * @return a shelf where the item is.
+	// */
+	// public Shelf findItem(String itemName) {
+	// for (Item item : stock) {
+	// if (item.getItemName().equals(itemName)) {
+	// return item.getShelf();
+	// }
+	// }
+	// return null; // item not found.
+	// }
+	//
+	// /**
+	// * Finds what shelf a given item is on based off of its serial number.
+	// *
+	// * @author Grant Gertsen
+	// * @param itemNumber
+	// * @return a shelf with the given item on it
+	// */
+	// public Shelf findItem(int itemNumber) {
+	// for (Item item : stock) {
+	// if (item.getSerialNumber() == itemNumber) {
+	// return item.getShelf();
+	// }
+	// }
+	// return null; // item not found.
+	// }
 
 	/**
 	 * Find what shelf an item object is on
@@ -189,7 +199,35 @@ public class Inventory implements Tickable {
 	 * @return a shelf with the given item on it.
 	 */
 	public Shelf findItem(Item item) {
-		return findItem(item.getSerialNumber());
+		// System.out.println("Finding " + item);
+		// for (Item i : stock) {
+		// if (i.getSerialNumber() == item.getSerialNumber()) {
+		// System.out.println("hey we found " + item + "!");
+		// return item.getShelf();
+		// }
+		// }
+		// System.out.println(item + " not found! Will order for next
+		// delivery!");
+		// return null;
+		for (Item e : stock) {
+			if (!e.getShelf().isHome())
+				continue; // ignore moving shelves
+			if (e.equals(item))
+				return e.getShelf();
+		}
+		System.out.println("Item not in stock, will order more!");
+		orderedItems.add(item);
+		return null;
+	}
+
+	public void nullTest() {
+		System.out.println("Starting null test");
+		for (Item i : stock) {
+			if (i.getShelf() == null) {
+				System.out.println("FOUND ONE " + i);
+			}
+		}
+		System.out.println("Null test finished");
 	}
 
 	/**
@@ -214,7 +252,7 @@ public class Inventory implements Tickable {
 		for (Item e : stock) {
 			if (!(e.getShelf().getHomeLocation()).equals(shelf.getHomeLocation()))
 				continue;
-			System.out.println(e + " is on " + shelf);
+			// System.out.println(e + " is on " + shelf);
 			scan.add(e);
 		}
 		return scan.toArray(returnpattern);
@@ -242,9 +280,16 @@ public class Inventory implements Tickable {
 		}
 	}
 
+	public void printItems() {
+		for (Item item : stock) {
+			System.out.println(item + " on shelf " + item.getShelf());
+		}
+	}
+
 	@Override
 	public void tick(int count) {
 		time = count;
+		shelveItems();
 		if (time % 10 == 0) {
 			restock();
 		}

@@ -70,21 +70,18 @@ public class InventoryTest {
 	 * 
 	 * @author Grant Gertsen I need to find a better way to test this now...
 	 */
-	// @Test
-	// public void findItemTest() {
-	// SimRandom nums = new SimRandom();
-	// Floor floor = new MockFloor(nums);
-	// Inventory items = new Inventory(floor, nums);
-	// Shelf shelf1 = new Shelf(new Point(1,1));
-	// Shelf shelf2 = new Shelf(new Point(1,2));
-	// Shelf shelf3 = new Shelf(new Point(5,4));
-	// CatItem[] allItems = CatItem.catalog;
-	// Item item1 = new Item(allItems[234],shelf2);
-	// Item item2 = new Item(allItems[119],shelf1);
-	// items.addItem(item1); items.addItem(item2);
-	// Shelf temp = items.findItem(allItems[234].id);
-	// assertEquals(temp,shelf2);
-	// }
+	 @Test
+	 public void findItemTest() {
+	 SimRandom nums = new SimRandom();
+	 Floor floor = new MockFloor(nums);
+	 Inventory items = new Inventory(floor, nums);
+	 //items.printItems();
+	 items.shelveItems();
+	 CatItem[] allItems = CatItem.catalog;
+	 Shelf temp = items.findItem(new Item(allItems[0]));
+	 System.out.println("TEST PRINT: " + temp);
+//	 assertEquals(temp,shelf2);
+	 }
 	/**
 	 * Testing removing items from the Inventory class
 	 * 
@@ -104,7 +101,6 @@ public class InventoryTest {
 		items.addItem(item1);
 		items.addItem(item2);
 		Item removedItem = items.removeItem(item1);
-		shelf2.showItems();
 		assertEquals(item1, removedItem);
 	}
 
@@ -145,13 +141,11 @@ public class InventoryTest {
 		SimRandom nums = new SimRandom();
 		Floor floor = new MockFloor(nums);
 		Inventory items = new Inventory(floor, nums);
-		Shelf shelf = items.getStock()[0].getShelf();
-		Item[] shelfItems = items.onShelf(shelf);
-		System.out.println("FAKE LIST OF ITEMS");
-		for(Item i : shelfItems) {
-			System.out.println(i);
-		}
-		shelf.showItems();
+		CatItem[] allItems = CatItem.catalog;
+		System.out.println("POINT 1");
+		Item test = new Item(allItems[0]);
+		Shelf temp = items.findItem(test);
+		System.out.println("Our test shelf is " + temp);
 	}
 
 }
