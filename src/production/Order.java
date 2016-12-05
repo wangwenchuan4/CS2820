@@ -133,7 +133,7 @@ public class Order implements Picker {
 		
 		System.out.println("\n Picker removes " + product + " from shelf for order: " + address + "\n");
 		Item itemTook = location.removeItem(product);
-		// Inventory method
+		//Inventory method
 		
 		OrderItem orderProd = new OrderItem(itemTook);
 		

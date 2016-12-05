@@ -82,11 +82,18 @@ public class Robot implements Tickable {
                  * @author Andrew Marburg 
                  * method to change the robot's current destination
                  */
-		public void goTo(List<Point> newDest){
+		public void setPath(List<Point> newDest){
 			destination = newDest;
-            moveByOne();            
                         
-			
+                      	
+		}
+		
+		public void setDock(Dock d){
+			dock = d; 
+		}
+		
+		public void setStatus(int i){
+			state = i;
 		}
                 /**
                  * @author Andrew Marburg

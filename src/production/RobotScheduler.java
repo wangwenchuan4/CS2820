@@ -20,6 +20,11 @@ public class RobotScheduler implements Tickable{
 		   if (e.destination != null) moveRobot(e);
 		   }
 	    };	
+	    
+	    
+	    
+	    
+	    
 	  /**
 	   * @param r is a Robot to move along its path, and if
 	   * the Robot reaches the end of the path, then decide
@@ -40,24 +45,33 @@ public class RobotScheduler implements Tickable{
 		   tempcell.setContents(r);  // robot has moved to new place
 		   return;
 		   }
+		
 		// when path has one Point, we arrive in this tick to target
+		
 		Point goal = r.destination.get(0);
 		r.location = goal;
 		tempcell = F.getCell(goal);
+		
 		// on arrival to Shelf, validate there is a Shelf there
+		
 		if (r.state == Robot.pickershelfbound 
 				|| r.state == Robot.dockshelfbound) {
 		   assert tempcell.getContents() instanceof Shelf;
 		   assert r.shelf == tempcell.getContents();
 		   tempcell.setShadow(r);
 		   }
+		
 		// in any other case, cell should empty
+		
+		
 		else { 
 		  assert tempcell.getContents() == null; 
 		  tempcell.setContents(r);
 		  }
+		
 		r.destination = null;
 		switch (r.state) { 
+		
 		// these are cases of reaching goal in path
 		case Robot.pickershelfbound:
 		   r.shelf.pickup();  // robot claims this shelf
@@ -98,6 +112,10 @@ public class RobotScheduler implements Tickable{
 		return;
 	    }
 	  
+	  
+	  
+	  
+	  
 	  /**
 	   * @param s is a Shelf to fetch and bring to the picker
 	   * location (which the Floor knows)
@@ -113,6 +131,11 @@ public class RobotScheduler implements Tickable{
 		robot.picker = p;
 		robot.shelf = s;  // don't have it yet, but will get it
 	    };
+	    
+	    
+	    
+	    
+	    
 	  /**
 	   * @param s is a Shelf to fetch and bring to the receiving
 	   * dock location (which the Floor knows)
@@ -120,7 +143,22 @@ public class RobotScheduler implements Tickable{
 	   * which invoked this method. The d parameter is thus a
 	   * "callback" object to notify Inventory at some later tick()
 	   */
-	  public void requestShelf(Shelf s, Dock d) { };
+	  public void requestShelf(Shelf s, Dock d) { 
+	  	Robot r = findRobot();
+	  	List<Point> pathing = F.getPath(r.getLocation(),s.getLocation());
+	  	r.setPath(pathing);
+	  	r.setDock(d);
+	  	r.setStatus(1);
+	  	
+	  			
+	  }
+	  	
+	  
+	  
+	  
+	  
+	  
+	  
 	  /**
 	   * Command to return a robot carrying a shelf back to 
 	   * a ShelfArea on the Floor and put it down. Then the 

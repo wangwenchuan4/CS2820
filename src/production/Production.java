@@ -8,7 +8,7 @@ public class Production {
 	public static void main(String[] args){
 		 		SimRandom rand = new SimRandom();
 		 		Floor F = new MockFloor(rand);
-		 		RobotScheduler R = new RobotScheduler();
+		 		RobotScheduler R = new RobotScheduler(F);
 		 		OrderControl O = new OrderControl();
 		 		Belt B = new Belt(F);
 		 		Inventory I = new Inventory(F, new SimRandom());
