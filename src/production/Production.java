@@ -9,9 +9,9 @@ public class Production {
 		 		SimRandom rand = new SimRandom();
 		 		Floor F = new MockFloor(rand);
 		 		RobotScheduler R = new RobotScheduler(F);
-		 		OrderControl O = new OrderControl();
 		 		Belt B = new Belt(F);
 		 		Inventory I = new Inventory(F, new SimRandom());
+		 		OrderControl O = new OrderControl(I,B,R,rand);
 		 		
 		 		Master m = new Master(F, R, I, O, B);
 		 		m.run(30);
