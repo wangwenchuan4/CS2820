@@ -12,14 +12,14 @@ import java.util.List;
 	 * methods will allow for order to be added, removed, and completed 
 	 * Might need to change allOrders from a hashmap, but not at the moment
 	 */
-public class OrderControl implements Tickable {
+public class OrderControl implements Tickable, Picker {
 	//HashMap<Integer, Order> allOrders;// order # , List of Items  
 	//LinkedList<Order> allOrders;
 	
 	private Inventory I;
 	private RobotScheduler R;
 	private Belt B;
-	private LinkedList<Order> allOrders;
+	 LinkedList<Order> allOrders;
 	private SimRandom randomsource;
 	private Order currentorder; 
 	private Bin currentbin;
@@ -29,11 +29,13 @@ public class OrderControl implements Tickable {
 	int time;  
 	
 	/**
-	 * @author Ted Herman
+	 * @author Ted Herman, Casey Kolodziejczyk
 	 * @param Inventory component, needed to create sensible
 	 * new Order to add to queue of work to do (for testing,
 	 * it just creates a few initial orders)
 	 * @param rand is a SimRandom, for predictable randomness
+	 * 
+	 * Decided to use this over mine because it was a better version of mine
 	 */
 	public OrderControl(Inventory I, Belt B, RobotScheduler R, SimRandom rand) {
 		this.I = I; // so we can later call upon Inventory methods
@@ -49,63 +51,6 @@ public class OrderControl implements Tickable {
 		  allOrders.addLast(getRandomOrder());
 		  }
 	    }	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**
-	 * @author Casey Kolodziejczyk
-	 * Creates OrderControl Object
-	 * But at this moment, Simply creates two orders of items
-	 */
-	public OrderControl(){
-		
-		
-		allOrders = new LinkedList<Order>();
-		//allOrders.add(getRandomOrder());
-		//allOrders.add(getRandomOrder());
-		
-		
-		Point Point1 = new Point(1,2);
-		Point Point2 = new Point(3,4);
-		
-		Shelf Shelf1 = new Shelf(Point1);
-		Shelf Shelf2 = new Shelf(Point2);
-		
-		OrderItem testItem1 = new OrderItem( "Baseball", 1, Shelf1);
-		OrderItem testItem2 = new OrderItem( "Glove", 2, Shelf1);
-		OrderItem testItem3 = new OrderItem( "Bat", 3, Shelf2);
-		
-		OrderItem testItem4 = new OrderItem( "Hockey Stick", 4, Shelf2);
-		OrderItem testItem5 = new OrderItem( "Puck", 5, Shelf2);
-				
-		List<OrderItem> testItems1 = new ArrayList<OrderItem>();
-		
-		testItems1.add(testItem1);
-		testItems1.add(testItem2);
-		testItems1.add(testItem3);
-		
-		List<OrderItem> testItems2 = new ArrayList<OrderItem>();
-		
-		testItems2.add(testItem4);
-		testItems2.add(testItem5);
-		
-		Order TestOrder1 = new Order(testItems1, "Maclean Hall", 1);
-				
-		Order TestOrder2 = new Order(testItems2, "Herman's House", 2);
-		
-		allOrders.add(TestOrder1);
-		allOrders.add(TestOrder2);
-		
-	}
 	
 	/**
 	 * @author Casey Kolodziejczyk
@@ -182,37 +127,53 @@ public class OrderControl implements Tickable {
 	 */
 	public void completeNextOrder(){
 		Order currentOrder = allOrders.getFirst();
-		currentOrder.completeOrder();
+		startOrderProcess(currentOrder);
 		allOrders.removeFirst();
 	}
 	
+	/**
+	 * @author Casey Kolodziejczyk
+	 * @param Item
+	 * @param Shelf
+	 * @return OrderItem from Shelf
+	 * Takes an shelf and an Item and then takes the item
+	 * off of the shelf and turns it into an OrderItem
+	 */
+	public OrderItem getItemNeeded(Item product) { 
+		System.out.println("\nOrders tells robot to get shelf at point: " + I.findItem(product) );
+		//R.requestShelf(I.findItem(product) , (Picker)this);
+		System.out.println("\nPicker removes " + product + " from shelf\n");
+		Item itemTook = I.removeItem(product);	
+		OrderItem orderProd = new OrderItem(itemTook);
+		return orderProd;
+	}
+	
+	
+	public void startOrderProcess(Order todo) {
+		currentorder = todo;
+		System.out.println("\nPicker starts to complete new order ");
+		System.out.println("\nPicker grabs a new bin for the order \n");
+		B.getBin();
+		
+		while (todo.orderFulfilled() != true) {
+			for (int i = 0; i < todo.order.size(); i++) {		
+				todo.addItem(getItemNeeded(todo.order.get(i))); //, order.get(i).getShelf()));
+				//addItem(getItemNeeded(order.get(i), I.findItem(order.get(i))));
+							/// Call findItem()v 
+			}
+		}
+		if (todo.orderFulfilled() == true){
+			System.out.println("Order :\n" + todo.address + " has been completed!");
+			System.out.println("\nPicker now places the bin for on the belt");
+			B.addBin(currentbin);
+		}
+	}
+
 	public int orderAmount() {
 		System.out.println("There are " + allOrders.size() + " orders to be fulfilled");
 		return allOrders.size();
 	}
-	
-	//@Override
-	//public void tick(int count) {
-	//	this.orderAmount();
-	//	time++;
-	//}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * @author Ted Herman
 	 * 
@@ -279,27 +240,7 @@ public class OrderControl implements Tickable {
 	 * its job, Orders will find a Shelf with the needed OrderItem
 	 * and continue.
 	 */
-		
-		
-		
-		
-		/**
-		 * These are methonds I need from others in order to be able to attempt and see if tick works
-		 *  I.onShelf(s) -> Needs a method that take a shelf and gives out all items on it.
-		 *	R.returnShelf(robot) ->
-		 *	R.requestShelf(s,(Picker)this); -> requests a shelf and then picker.
-		 *	R.robotAvailable()
-		 *	B.binAvailable())
-		 *	B.getBin()	
-		 */	
-		
-		
-		
-		
-		
-		
-		
-		
+	
 	// special case: make currentbin variable null if an order was
 	// just finished and the belt moved it away
 	if (currentbin != null && currentbin.isFinished() && B.binAvailable()){
@@ -357,6 +298,10 @@ public class OrderControl implements Tickable {
 	if (s == null) return;  // item not in warehouse, Inventory should replenish
 	neededitem = nextitem;  // remember the item needed when Robot arrives
 	
+	System.out.println("\nCurrent Shelf requesting: " + s);
+	System.out.println("\nCurrent Shelf home location"  + s.getHomeLocation());
+	System.out.println("\nCurrent Item shelf: "  + I.findItem(neededitem));
+	
 	R.requestShelf(s,(Picker)this);  // pretend to be the picker
 	return;
 	   }
@@ -397,29 +342,6 @@ public class OrderControl implements Tickable {
 	R.returnShelf(r);  // tell Robot to return Shelf back to its home
 	};
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	   * @author Ted Herman
 	   * get a random new order and add it to the queue; a fancier
@@ -446,119 +368,5 @@ public class OrderControl implements Tickable {
 	    }
 	  }
 
-	/**
-	 * 
-	 * @author Ted Herman
-	 * A local class just to supply addresses
-	 * for orders in the Orders component
-	 *
-	 */
-
-	class Address {
-		
-	  SimRandom SR;
-	  
-	  /**
-	   * @author Ted Herman
-	   * @param SR is SimRandom object, so that all the random
-	   * choices by methods of Address will be predictably random
-	   */
-	  public Address(SimRandom SR) {
-		this.SR = SR;
-	    }
-
-	  /**
-	   * @author Ted Herman
-	   * @param R is a SimRandom for predictability in randomness
-	   * @return String containing a random address for an order
-	   */
-	  public String randomAddress() {
-		String FirstName = randomFirstName();
-		String LastName = randomLastName();
-		String StreetNumber = new Integer(randomStreetNumber()).toString();
-		String StreetName = randomStreetName();
-		String City = randomCity();
-		String State = randomState();
-		String ZipCode = randomZip();
-		String Address = FirstName + " " +
-		  LastName + "\n" + StreetNumber + " " +
-		  StreetName + "\n" + City + " " + State + ZipCode;
-		return Address;
-	    }
-	  
-	  /**
-	   * @author Ted Herman
-	   * @return a string containing a random street name
-	   */
-	  private String randomStreetName() {
-		final String[] baseNames = {"Park Street",
-				"Main Street", "Washington Boulevard",
-				"Third Street", "Park Road",
-				"Maple Street", "Hill Road"};
-		return baseNames[SR.nextInt(baseNames.length)];
-	    }
-	  
-	  /**
-	   * @author Ted Herman
-	   * @return an integer in the range [1,999] for street address
-	   */
-	  private int randomStreetNumber () {
-		return 1+SR.nextInt(998);
-	    }
-	  
-	  /**
-	   * @author Ted Herman
-	   * @return a random first name for an address
-	   */
-	  private String randomFirstName() {
-		final String[] baseFirstNames = {"Dakota", "Emma",
-				"Julian", "Nigella", "Will", "Asti", "Lee",
-				"Pat", "Mavis", "Jerome", "Lilly", "Tess"};
-		return baseFirstNames[SR.nextInt(baseFirstNames.length)];
-		}
-	  
-	  /**
-	   * @author Ted Herman
-	   * @return a random last name for an address
-	   */
-	  private String randomLastName() {
-		final String[] baseLastNames = {"Parker","Mason",
-					"Smith","Wright","Jefferson","Iqbal",
-					"Owens","Lafleur","Metselen","Vinceroy",
-					"Saville","Troitski","Andrews"};
-		return baseLastNames[SR.nextInt(baseLastNames.length)];
-	    }
-	  
-	  /**
-	   * @author Ted Herman
-	   * @return a random city name
-	   */
-	  private String randomState() {
-		final String[] baseState = {"IA","NE","MO",
-					"IL","KS","MN","SD","AR","OK","TX"};
-		return baseState[SR.nextInt(baseState.length)];
-	    }
-	  
-	  /**
-	   * @author Ted Herman
-	   * @return a random state code (two letters)
-	   */
-	  private String randomCity() {
-		final String[] baseCity = {"Springfield","Clinton",
-					"Madison","Franklin","Chester","Marion",
-					"Greenville","Salem","Anytown","Hope"};
-		return baseCity[SR.nextInt(baseCity.length)];
-	    }
-	  
-	  /**
-	   * @author Ted Herman
-	   * @return a random state code (two letters)
-	   */
-	  private String randomZip() {
-	    String ZipCode = "";
-	    for (int i=0; i<6; i++) 
-	      ZipCode += "0123456789".charAt(SR.nextInt(10));
-	    return ZipCode;
-	  }
-	}
+	
 
