@@ -43,15 +43,7 @@ public class Shelf {
 	public Point getHomeLocation() {
 		return homeLocation;
 	}
-	/**
-	 * Returns true if at home
-	 * @author Grant Gertsen
-	 * @return true if at home
-	 */
-	public boolean isHome() {
-		return (resting);
-	}
-	
+		
 	public void pickup() {
 		resting = false;
 	}

@@ -66,6 +66,10 @@ public class Inventory implements Tickable {
 		return removed;
 	}
 
+	/**
+	 * No longer in use: was used to fix a previous bug
+	 * @author Grant Gertsen
+	 */
 	public void shelveItems() {
 		for (Item item : stock) {
 			if (item.getShelf() == null) {
@@ -157,60 +161,17 @@ public class Inventory implements Tickable {
 		return item;
 	}
 
-	// /**
-	// * Finds a shelf that has a given item on it (to be called by Orders I
-	// * believe)
-	// *
-	// * @author Grant Gertsen
-	// * @param itemName
-	// * the name of the item you're looking for.
-	// * @return a shelf where the item is.
-	// */
-	// public Shelf findItem(String itemName) {
-	// for (Item item : stock) {
-	// if (item.getItemName().equals(itemName)) {
-	// return item.getShelf();
-	// }
-	// }
-	// return null; // item not found.
-	// }
-	//
-	// /**
-	// * Finds what shelf a given item is on based off of its serial number.
-	// *
-	// * @author Grant Gertsen
-	// * @param itemNumber
-	// * @return a shelf with the given item on it
-	// */
-	// public Shelf findItem(int itemNumber) {
-	// for (Item item : stock) {
-	// if (item.getSerialNumber() == itemNumber) {
-	// return item.getShelf();
-	// }
-	// }
-	// return null; // item not found.
-	// }
-
 	/**
 	 * Find what shelf an item object is on
 	 * 
 	 * @author Grant Gertsen
+	 * @author Ted Herman
 	 * @param item
 	 * @return a shelf with the given item on it.
 	 */
 	public Shelf findItem(Item item) {
-		// System.out.println("Finding " + item);
-		// for (Item i : stock) {
-		// if (i.getSerialNumber() == item.getSerialNumber()) {
-		// System.out.println("hey we found " + item + "!");
-		// return item.getShelf();
-		// }
-		// }
-		// System.out.println(item + " not found! Will order for next
-		// delivery!");
-		// return null;
 		for (Item e : stock) {
-			if (!e.getShelf().isHome())
+			if (!e.getShelf().isResting())
 				continue; // ignore moving shelves
 			if (e.equals(item))
 				return e.getShelf();
@@ -218,16 +179,6 @@ public class Inventory implements Tickable {
 		System.out.println("Item not in stock, will order more!");
 		orderedItems.add(item);
 		return null;
-	}
-
-	public void nullTest() {
-		System.out.println("Starting null test");
-		for (Item i : stock) {
-			if (i.getShelf() == null) {
-				System.out.println("FOUND ONE " + i);
-			}
-		}
-		System.out.println("Null test finished");
 	}
 
 	/**
