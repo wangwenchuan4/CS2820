@@ -133,6 +133,6 @@ public class Belt implements Tickable {
 		
 	}
 	
-	//TODO: need Packer method and handle what happens to bin at the end
+	//TODO: need Packer method and handle what happens to bin at the endgut
 
 }
