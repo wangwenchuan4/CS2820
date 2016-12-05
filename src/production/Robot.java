@@ -1,5 +1,6 @@
 package production;
 import java.util.List;
+
 /**
  *
  * @author Andrew Marburg
@@ -32,7 +33,7 @@ public class Robot implements Tickable {
         public Dock dock;
         public int battery;
         public int charg;
-
+        
 		public Robot(Point startingLocation){
 			destination = null;
 			location = startingLocation;
@@ -124,6 +125,7 @@ public class Robot implements Tickable {
 			}
 			else if(charg == 20){
 				battery = 100;
+				charg = 0;
 				setStatus(idle);
 			}
 		}
@@ -133,6 +135,7 @@ public class Robot implements Tickable {
 		 * and checks to see if it needs to be charged when not moving
 		 * 
 		 */
+		
 		private void batteryUsage(){
 			if (state != idle){
 				output();

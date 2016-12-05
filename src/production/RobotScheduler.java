@@ -1,5 +1,6 @@
 package production;
-import java.util.ArrayList;
+
+
 import java.util.List;
 
 public class RobotScheduler implements Tickable{
@@ -8,6 +9,7 @@ public class RobotScheduler implements Tickable{
 	
 	
 	public RobotScheduler(Floor F){
+		this.F = F;
 		robots = new Robot[1];
 		robots[0] = new Robot(F.getCharger());
 		Cell t = F.getCell(F.getCharger());
@@ -145,7 +147,7 @@ public class RobotScheduler implements Tickable{
 	   * which invoked this method. The d parameter is thus a
 	   * "callback" object to notify Inventory at some later tick()
 	   */
-	  public void requestShelf(Shelf s, Dock d) { 
+	 /** public void requestShelf(Shelf s, Dock d) { 
 	  	Robot r = findRobot();
 	  	List<Point> pathing = F.getPath(r.getLocation(),s.getLocation());
 	  	r.setPath(pathing);
@@ -153,7 +155,7 @@ public class RobotScheduler implements Tickable{
 	  	r.setStatus(1);
 	  	
 	  			
-	  }
+	  }**/
 	  	
 	  
 	  
