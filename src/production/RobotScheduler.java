@@ -11,6 +11,8 @@ public class RobotScheduler implements Tickable{
 		robots = new Robot[1];
 		robots[0] = new Robot(F.getCharger());
 		Cell t = F.getCell(F.getCharger());
+		t.setContents(robots[0]);
+		
 		
 	}
 		

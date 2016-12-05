@@ -21,6 +21,7 @@ public class Robot implements Tickable {
   public static final int atdock = 7;
   public static final int afterdockshelfbound = 8;
   public static final int chargerbound = 9;
+  public static final int charging = 10;
   
         public List<Point> destination;
         public Point location;
@@ -29,6 +30,8 @@ public class Robot implements Tickable {
         public int state;
         public Picker picker;
         public Dock dock;
+        public int battery;
+        public int charg;
 
 		public Robot(Point startingLocation){
 			destination = null;
@@ -38,6 +41,8 @@ public class Robot implements Tickable {
             shelfLocation = null;
             picker = null;
             dock = null;
+            battery = 100; // this number will most likely change based on how long the avg mission takes
+            charg = 0;
                         
                         
 			
@@ -95,23 +100,52 @@ public class Robot implements Tickable {
 		public void setStatus(int i){
 			state = i;
 		}
+		
+		public int batteryStatus(){
+			return battery;
+		}
                 /**
                  * @author Andrew Marburg
-                 * method that will be used by the RobotSheduler every tick
-                 * to move the Robot by one point
+                 * method that will be used to drain the robot's battery
                  */
-		public void moveByOne(){
-                   if(destination != null){
-                	   location = destination.get(0);
-                	   destination.remove(0);
-                	   
-                   }
-                    
-                    
-                    
-                    
-                }
+		private void output(){
+			
+			battery = battery - 1;
+			
+		}
+		/**
+		 * @author Andrew Marburg
+		 * method that charges the battery for 20 ticks then sets 
+		 * the status to idle when fully charged
+		 */
+		private void charge(){
+			if(charg<20){
+				charg = charg + 1;
+			}
+			else if(charg == 20){
+				battery = 100;
+				setStatus(idle);
+			}
+		}
+		/**
+		 * @author Andrew Marburg
+		 * method that drains the robot's battery if it is moving
+		 * and checks to see if it needs to be charged when not moving
+		 * 
+		 */
+		private void batteryUsage(){
+			if (state != idle){
+				output();
+				
+			}
+			if (state == idle && battery < 25){
+				setStatus(charging);
+				charge();
+			}
+		}
 		public void tick(int count){
+			batteryUsage();
+			
 			
 		}
 		
