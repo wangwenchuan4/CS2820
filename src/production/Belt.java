@@ -64,9 +64,9 @@ public class Belt implements Tickable {
 	 * Adds bin to Belt - referenced by beltID
 	 * @param binId
 	 */
-	public void addBin(Bin binId) {
+	public void addBin(Bin bin) {
 		//add bin
-		currentBins.add(binId);
+		currentBins.add(bin);
 	}
 	/**
 	 * Removes bin from Belt.
@@ -81,6 +81,31 @@ public class Belt implements Tickable {
 		newBin = new Bin();
 		return newBin;
 	}
+	
+	/**
+	 * @author TedHerman - needed for compatibility with Orders
+	 * @return
+	 */
+	public boolean binAvailable() {
+		if (newBin != null) return false;
+		Cell c = F.getCell(F.getPicker());
+		if (c.getContents() != null) return false;
+		
+	return true;
+	}
+	
+	  private boolean isMovable() {
+			if (newBin != null) return false;  // wait for picker to finish bin
+			for (Point p: beltArea) {
+			  Cell c = F.getCell(p);
+			  Object o = c.getContents();
+			  if (o == null) continue;  // skip empty cell
+			  if ((o instanceof Bin) && !((Bin)o).isFinished()) return false;
+			  if ((o instanceof Parcel) && !((Parcel)o).isFinished()) return false;
+			  }
+			return true;  // nothing stops belt from moving
+		}
+	  
 	/**
 	 * Implemented from Tickable.  This is what will be used to move the belt.
 	 */
@@ -88,6 +113,26 @@ public class Belt implements Tickable {
 	public void tick(int count) {
 		// TODO Auto-generated method stub
 		
+		if (newBin != null) {
+		      if (!newBin.isFinished()) return; // belt cannot move
+		      Cell c = F.getCell(F.getPicker());   // look into Picker cell
+		      if (c.getContents()!=null) return;   // wait for cell to empty
+		      c.setContents(newBin);
+		      newBin = null;
+			  }
+			// if belt is movable, loop to copy cells forward
+			if (!isMovable()) return;
+			Object prev = null;  // temporary variable used in copy forward
+			for (Point p: beltArea) {
+			  Cell c = F.getCell(p);
+			  Object t = c.getContents(); // save what it has for next time
+			  c.setContents(prev);        // write over what it was 
+			  prev = t;
+			  }
+		if (prev != null) System.out.println("something dropped off belt");
+		
 	}
+	
+	//TODO: need Packer method and handle what happens to bin at the end
 
 }
