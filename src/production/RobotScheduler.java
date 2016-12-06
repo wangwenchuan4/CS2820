@@ -31,6 +31,25 @@ public class RobotScheduler implements Tickable{
 		
 		// Look to see if any Robot should move
 		//for (Robot e: robots) {
+		
+		/**for (int y = 0; y<2; y++){
+			if (robots[y].destination != null){
+				List<Point> pointList = robots[y].destination;
+				for(int x = 0; x<2; x++){
+					if (robots[x].destination != null){
+						List<Point> listPoint = robots[x].destination;
+						if(pointList.get(0) == listPoint.get(0)){
+							System.out.println("Collision between Robot " + y + " and Robot " + x + " at location " + pointList.get(0));
+						
+						}
+					}
+				}
+				
+			}
+			
+		}
+		
+		**/
 		for (int i = 0; i<2; i++) {
 			robots[i].batteryUsage(i);
 		   if (robots[i].destination != null) moveRobot(robots[i], i);
@@ -75,7 +94,7 @@ public class RobotScheduler implements Tickable{
 		   assert tempcell.getContents() instanceof Shelf;
 		   assert r.shelf == tempcell.getContents();
 		   tempcell.setShadow(r);
-		   System.out.println("Robot " + i + " state is pickershelfbound");
+		   System.out.println("Robot " + i + " is Picker Shelf Bound");
 		   }
 		
 		// in any other case, cell should empty
@@ -95,12 +114,12 @@ public class RobotScheduler implements Tickable{
 		   assert !r.shelf.isResting();
 		   r.destination = F.getPath(r.location,F.getPicker());
 		   r.state = Robot.pickerbound;  // now heading to Picker
-		   System.out.println("Robot " + i + " state is pickerbound");
+		  // System.out.println("Robot " + i + " state is pickerbound");
 		   break;
 		case Robot.pickerbound:
 		   r.state = Robot.atpicker;
 		   r.picker.notify(r,r.shelf);
-		   System.out.println("Robot " + i + " state is atpicker");
+		   System.out.println("Robot " + i + " is at Picker");
 		   break;
 		case Robot.afterdockshelfbound:
 		case Robot.afterpickershelfbound:
@@ -111,7 +130,7 @@ public class RobotScheduler implements Tickable{
 		   r.shelf = null;
 		   r.destination = F.getPath(goal,F.getCharger());
 		   r.state = Robot.chargerbound;
-		   System.out.println("Robot " + i + " state is chargerbound");
+		   System.out.println("Robot " + i + " is Homeward Bound");
 		   break;
 		case Robot.dockshelfbound:
 		   r.shelf.pickup();  // robot claims this shelf
@@ -127,7 +146,7 @@ public class RobotScheduler implements Tickable{
 		   break;   // just wait around in these cases
 		case Robot.chargerbound:
 		   r.state = Robot.idle;
-		   System.out.println("Robot " + i + " state is idle");
+		   System.out.println("Robot " + i + " is Idle");
 		   r.batteryUsage(i);
 		   break;
 		   }

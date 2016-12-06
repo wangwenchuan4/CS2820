@@ -132,6 +132,7 @@ public class Robot {
 				charg = 0;
 				state = idle;
 				System.out.println("Robot " + i + " is Charged");
+				System.out.println("Robot " + i + " is Idle");
 			}
 			
 			
