@@ -38,7 +38,7 @@ public class RobotScheduler implements Tickable{
 	    // some initial assertions say what is the expected precondition
 	    assert r.destination != null;
 	    assert r.destination.size() > 0;
-	    Cell tempcell = F.getCell(r.location);
+	    Cell tempcell = F.getCell(r.location.x, r.location.y);
 	    assert tempcell.getContents() == r || tempcell.getShadow() == r;
 	    tempcell.setContents(null); // Robot will no longer be in this cell
 	    tempcell.setShadow(null);
@@ -90,7 +90,7 @@ public class RobotScheduler implements Tickable{
 		case Robot.afterdockshelfbound:
 		case Robot.afterpickershelfbound:
 		   r.shelf.putdown();  // Shelf is back home
-		   tempcell = F.getCell(r.location);  // change status of this cell
+		   tempcell = F.getCell(r.location.x,r.location.y);  // change status of this cell
 		   tempcell.setContents(r.shelf);
 		   tempcell.setShadow(r);
 		   r.shelf = null;

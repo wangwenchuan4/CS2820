@@ -14,6 +14,6 @@ public class Production {
 		 		OrderControl O = new OrderControl(I,B,R,rand);
 		 		
 		 		Master m = new Master(F, R, I, O, B);
-		 		m.run(30);
+		 		m.run(2000); // can change as necessary
 		 	}
 }
