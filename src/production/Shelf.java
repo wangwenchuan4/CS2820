@@ -45,10 +45,16 @@ public class Shelf {
 	}
 		
 	public void pickup() {
+		System.out.println("Picked up shelf!");
 		resting = false;
 	}
-
+	
+	/**
+	 * 
+	 * @author Grant Gertsen
+	 */
 	public void putdown() {
+		System.out.println("Put down shelf!");
 		resting = true;
 	}
 	/**

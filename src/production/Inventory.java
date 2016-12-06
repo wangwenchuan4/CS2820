@@ -238,6 +238,7 @@ public class Inventory implements Tickable {
 			n.changeShelf((Shelf) c.getContents());
 			this.addItem(n);
 		}
+		orderedItems.clear();
 	}
 
 	/**

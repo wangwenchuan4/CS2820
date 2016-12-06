@@ -80,33 +80,37 @@ public class MockFloor implements Floor {
 	  }
 	return beltarea;
     }
+
   /**
-   * A very stupid getPath(s,t) that just makes
-   * and returns a list of only two Points, s and t
+   * Get path for robot
+   * @author Grant Gertsen
+   * @param s
+   * @param t
+   * @return a list of points for the robot to traverses
    */
   public List<Point> getPath(Point s,Point t) {
 	LinkedList<Point> L = new LinkedList<Point>();
 	Point temp = new Point(s.x, s.y);
-	System.out.println("Start Coords: " + temp);
+	System.out.println("Robot starts at " + temp + " and ends at " + t);
 	L.addFirst(s);
 		while (temp.y != t.y) {
 			if(temp.y > t.y) {
 			temp = temp.left();
-			System.out.println("New coords: " + temp);
+			//System.out.println("New coords: " + temp);
 		} else {
 			temp = temp.right();
-			System.out.println("New coords: " + temp);
+			//System.out.println("New coords: " + temp);
 		}
 		L.add(temp);
 	}
 	while(temp.x != t.x) {
 		if(temp.x > t.x) {
 			temp = temp.above();
-			System.out.println("New coords: " + temp);
+			//System.out.println("New coords: " + temp);
 
 		} else {
 			temp = temp.below();
-			System.out.println("New coords: " + temp);
+			//System.out.println("New coords: " + temp);
 		}
 		L.add(temp);
 	}
