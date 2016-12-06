@@ -19,7 +19,9 @@ public class MockFloor implements Floor {
   final Point shippingdock = new Point(0,0);
   final Point receivingdock = new Point(80,0);
   final Point charger = new Point(20,20);
+  final Point charger2 = new Point(21,20);
 
+  Point[] chargers;
   List<ShelfArea> shelfareas;
   Map<String,Cell> allpoints;
   SimRandom randogen;
@@ -51,6 +53,9 @@ public class MockFloor implements Floor {
           }
         allpoints.put(P.toString(),N);
         }
+    chargers = new Point[2];
+    chargers[0] = charger;
+    chargers[1] = charger2;
     }
   /**
    * @author Ted Herman
@@ -72,7 +77,23 @@ public class MockFloor implements Floor {
   public Point getPacker() { return packer; }
   public Point getShippingDock() { return shippingdock; }
   public Point getReceivingDock() { return receivingdock; }
-  public Point getCharger() { return charger; }
+  
+  /**
+   * @author Andrew Marburg
+   * method that will return a charger from the list of chargers
+   */
+  public Point getCharger() {
+	  int place = 1;
+	  for(int i = 0; i<2; i++){
+		  Cell y = getCell(chargers[1]);
+		  if(y.getContents() == null ){
+			  place = i;
+			  return chargers[i];
+		  }
+	  }
+	  return chargers[place];
+	   }
+  public Point getCharger2() { return charger2; }
   public List<Point> getBeltArea() {
 	ArrayList<Point> beltarea = new ArrayList<Point>();
 	for (int i=picker.y; i>=0; i--) {

@@ -7,13 +7,22 @@ public class RobotScheduler implements Tickable{
 	Floor F;
 	Robot[] robots;
 	
-	
+	/**
+	 * 
+	 * @author Andrew Marburg
+	 * intializing the robotScheduler with 2 robots
+	 */
 	public RobotScheduler(Floor F){
 		this.F = F;
-		robots = new Robot[1];
-		robots[0] = new Robot(F.getCharger());
-		Cell t = F.getCell(F.getCharger());
+		robots = new Robot[2];
+		Point st1 = new Point(20,19);
+		Point st2 = new Point(21,19);
+		robots[0] = new Robot(st1);
+		robots[1] = new Robot(st2);
+		Cell t = F.getCell(st1);
 		t.setContents(robots[0]);
+		Cell y = F.getCell(st2);
+		y.setContents(robots[1]);
 		
 		
 	}
@@ -21,9 +30,10 @@ public class RobotScheduler implements Tickable{
 	public void tick(int count) { 
 		
 		// Look to see if any Robot should move
-		for (Robot e: robots) {
-			e.batteryUsage();
-		   if (e.destination != null) moveRobot(e);
+		//for (Robot e: robots) {
+		for (int i = 0; i<2; i++) {
+			robots[i].batteryUsage(i);
+		   if (robots[i].destination != null) moveRobot(robots[i], i);
 		   }
 	    };	
 	    
@@ -36,7 +46,7 @@ public class RobotScheduler implements Tickable{
 	   * the Robot reaches the end of the path, then decide
 	   * on where it should go next (if anywhere).
 	   */
-	  private void moveRobot(Robot r) { 
+	  private void moveRobot(Robot r, int i) { 
 	    // some initial assertions say what is the expected precondition
 	    assert r.destination != null;
 	    assert r.destination.size() > 0;
@@ -65,6 +75,7 @@ public class RobotScheduler implements Tickable{
 		   assert tempcell.getContents() instanceof Shelf;
 		   assert r.shelf == tempcell.getContents();
 		   tempcell.setShadow(r);
+		   System.out.println("Robot " + i + " state is pickershelfbound");
 		   }
 		
 		// in any other case, cell should empty
@@ -84,10 +95,12 @@ public class RobotScheduler implements Tickable{
 		   assert !r.shelf.isResting();
 		   r.destination = F.getPath(r.location,F.getPicker());
 		   r.state = Robot.pickerbound;  // now heading to Picker
+		   System.out.println("Robot " + i + " state is pickerbound");
 		   break;
 		case Robot.pickerbound:
 		   r.state = Robot.atpicker;
 		   r.picker.notify(r,r.shelf);
+		   System.out.println("Robot " + i + " state is atpicker");
 		   break;
 		case Robot.afterdockshelfbound:
 		case Robot.afterpickershelfbound:
@@ -98,6 +111,7 @@ public class RobotScheduler implements Tickable{
 		   r.shelf = null;
 		   r.destination = F.getPath(goal,F.getCharger());
 		   r.state = Robot.chargerbound;
+		   System.out.println("Robot " + i + " state is chargerbound");
 		   break;
 		case Robot.dockshelfbound:
 		   r.shelf.pickup();  // robot claims this shelf
@@ -113,7 +127,8 @@ public class RobotScheduler implements Tickable{
 		   break;   // just wait around in these cases
 		case Robot.chargerbound:
 		   r.state = Robot.idle;
-		   r.batteryUsage();
+		   System.out.println("Robot " + i + " state is idle");
+		   r.batteryUsage(i);
 		   break;
 		   }
 		return;
@@ -137,6 +152,7 @@ public class RobotScheduler implements Tickable{
 		robot.state = Robot.pickershelfbound;
 		robot.picker = p;
 		robot.shelf = s;  // don't have it yet, but will get it
+		
 	    };
 	    
 	    
@@ -181,11 +197,12 @@ public class RobotScheduler implements Tickable{
 	   */
 	  private Robot findRobot() {
 		// currently there is only one robot, this is trivial
+		   
 		Robot r = robots[0];
 		assert r.state == Robot.idle;
 		assert r.shelf == null;
-		return r;
-	    }
+		return r;}
+	    
 	  /**
 	   * @return true if a robot is available
 	   */

@@ -119,11 +119,11 @@ public class Robot {
 		 * method that charges the battery for 20 ticks then sets 
 		 * the status to idle when fully charged
 		 */
-		private void charge(){
+		private void charge(int i){
 			if(charg<2){
 				charg = charg + 1;
 				
-				System.out.println("Robot Charging");
+				System.out.println("Robot " + i + " is Charging");
 				
 			}
 			
@@ -131,7 +131,7 @@ public class Robot {
 				battery = 100;
 				charg = 0;
 				state = idle;
-				System.out.println("Robot Charged");
+				System.out.println("Robot " + i + " is Charged");
 			}
 			
 			
@@ -143,18 +143,18 @@ public class Robot {
 		 * 
 		 */
 		
-		public void batteryUsage(){
+		public void batteryUsage(int i){
 			if (state != idle && state != charging){
 				output();
 				
 			}
 			if (state == charging){
-				charge();
+				charge(i);
 			}
 			
 			if (state == idle && battery < 25){
 				setStatus(charging);
-				charge();
+				charge(i);
 			}
 			
 		}
