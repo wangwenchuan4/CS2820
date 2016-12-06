@@ -19,8 +19,10 @@ public class RobotScheduler implements Tickable{
 	}
 		
 	public void tick(int count) { 
+		
 		// Look to see if any Robot should move
 		for (Robot e: robots) {
+			e.batteryUsage();
 		   if (e.destination != null) moveRobot(e);
 		   }
 	    };	
@@ -111,6 +113,7 @@ public class RobotScheduler implements Tickable{
 		   break;   // just wait around in these cases
 		case Robot.chargerbound:
 		   r.state = Robot.idle;
+		   r.batteryUsage();
 		   break;
 		   }
 		return;

@@ -10,7 +10,7 @@ import java.util.List;
 
 
 
-public class Robot implements Tickable {
+public class Robot {
     
   public static final int idle = 0;
   public static final int pickershelfbound = 1;
@@ -120,14 +120,21 @@ public class Robot implements Tickable {
 		 * the status to idle when fully charged
 		 */
 		private void charge(){
-			if(charg<20){
+			if(charg<2){
 				charg = charg + 1;
+				
+				System.out.println("Robot Charging");
+				
 			}
-			else if(charg == 20){
+			
+			if(charg == 2){
 				battery = 100;
 				charg = 0;
-				setStatus(idle);
+				state = idle;
+				System.out.println("Robot Charged");
 			}
+			
+			
 		}
 		/**
 		 * @author Andrew Marburg
@@ -136,21 +143,22 @@ public class Robot implements Tickable {
 		 * 
 		 */
 		
-		private void batteryUsage(){
-			if (state != idle){
+		public void batteryUsage(){
+			if (state != idle && state != charging){
 				output();
 				
 			}
+			if (state == charging){
+				charge();
+			}
+			
 			if (state == idle && battery < 25){
 				setStatus(charging);
 				charge();
 			}
-		}
-		public void tick(int count){
-			batteryUsage();
-			
 			
 		}
+		
 		
 		
 		

@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class RobotTest {
 	
-	@Test
+	/**@Test
 	public void RobotMoveTest1(){
 		SimRandom rand = new SimRandom();
 		Floor floor = new MockFloor(rand);
@@ -29,7 +29,7 @@ public class RobotTest {
 		
 	}
 	
-	@Test
+	/**@Test
 	public void RobotMoveTest2(){
 		SimRandom rand = new SimRandom();
 		Floor floor = new MockFloor(rand);
@@ -49,6 +49,26 @@ public class RobotTest {
 		i = i-1;
 		}
 		assertEquals(true, r.robots[0].state == Robot.idle);
+	}**/
+	@Test
+	public void chargeTest(){
+		SimRandom rand = new SimRandom();
+		Floor floor = new MockFloor(rand);
+		
+		
+		RobotScheduler r = new RobotScheduler(floor);
+		r.robots[0].battery = 0;
+		r.robots[0].state = Robot.idle;
+		int i =5;
+		while(i!= 0){
+			
+			r.tick(400);
+			i = i-1;}
+		assertEquals(true, r.robots[0].battery == 100);
+		assertEquals(true, r.robots[0].state == Robot.idle);
+		
+		
+		
+		
 	}
-
-}
+	}
