@@ -93,7 +93,7 @@ public class TestMaster {
     *
     */
    
-   class Belt implements Tickable,Task{
+   class Belt implements Tickable{
 		
 		Master master;
 		int currentTime;
@@ -121,7 +121,7 @@ public class TestMaster {
 		
 	}
    
-   public class Floor implements Tickable,Task{
+   public class Floor implements Tickable{
 		
 		Master master;
 		int currentTime;
@@ -148,7 +148,7 @@ public class TestMaster {
 		
 		
 	}
-public class Inventory implements Tickable,Task{
+public class Inventory implements Tickable{
 	
 	Master master;
 	int currentTime;
@@ -176,7 +176,7 @@ public class Inventory implements Tickable,Task{
 	
 	
 }
-public class OrderControl implements Tickable,Task{
+public class OrderControl implements Tickable{
 	
 	
 	int currentTime;
@@ -209,7 +209,7 @@ public class OrderControl implements Tickable,Task{
 * @author wenchwang
 */
 //assume robot event takes 5 tick
-public class RobotScheduler implements Tickable,Task {
+public class RobotScheduler implements Tickable {
   	Master master;
       int currentTime;
 		
@@ -246,7 +246,7 @@ public class RobotScheduler implements Tickable,Task {
 * @author wenchwang
 */
 //assume Visualizer event takes 3 tick
-public class Visualizer implements Tickable,Task{
+public class Visualizer implements Tickable{
 		
 		Master master;
 		int currentTime;
