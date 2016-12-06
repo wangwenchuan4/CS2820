@@ -50,7 +50,7 @@ public class RobotTest {
 		}
 		assertEquals(true, r.robots[0].state == Robot.idle);
 	}**/
-	@Test
+	/**@Test
 	public void chargeTest(){
 		SimRandom rand = new SimRandom();
 		Floor floor = new MockFloor(rand);
@@ -70,5 +70,15 @@ public class RobotTest {
 		
 		
 		
+	}**/
+	public void finder(){
+	SimRandom rand = new SimRandom();
+	Floor floor = new MockFloor(rand);
+	
+	
+	RobotScheduler r = new RobotScheduler(floor);
+	r.robots[0].state = Robot.charging; 
+	assertEquals(true, r.findRobot() == r.robots[1]);
+	
 	}
 	}

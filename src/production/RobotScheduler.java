@@ -195,20 +195,37 @@ public class RobotScheduler implements Tickable{
 	  /**
 	   * find an available Robot (which is not in use)
 	   */
-	  private Robot findRobot() {
+	  public Robot findRobot() {
 		// currently there is only one robot, this is trivial
-		   
+		  for (int i = 0; i<2; i++) {
+			  if(robots[i].state == Robot.idle && robots[i].shelf == null){
+				  return robots[i];
+			  }
+		  }
 		Robot r = robots[0];
-		assert r.state == Robot.idle;
-		assert r.shelf == null;
-		return r;}
+		
+		return r;
+		
+		
+		
+		
+	  }
 	    
 	  /**
 	   * @return true if a robot is available
 	   */
 	  public boolean robotAvailable() {
 		Robot r = robots[0];
-		return r.state == Robot.idle;
+		Robot t = robots[1];
+		if(r.state == Robot.idle){
+			return true;
+		}
+		if(t.state == Robot.idle){
+			return true;
+		}
+		else{
+			return false;
+		}
 	    }
 	  }
 	
