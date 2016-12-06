@@ -13,13 +13,10 @@ import java.util.List;
 	 * Might need to change allOrders from a hashmap, but not at the moment
 	 */
 public class OrderControl implements Tickable, Picker {
-	//HashMap<Integer, Order> allOrders;// order # , List of Items  
-	//LinkedList<Order> allOrders;
-	
 	private Inventory I;
 	private RobotScheduler R;
 	private Belt B;
-	 LinkedList<Order> allOrders;
+	LinkedList<Order> allOrders;
 	private SimRandom randomsource;
 	private Order currentorder; 
 	private Bin currentbin;
@@ -46,10 +43,6 @@ public class OrderControl implements Tickable, Picker {
 		currentorder = null;
 		currentbin = null;
 		neededitem = null;
-		
-		for (int i=0;i<3;i++) {
-		  allOrders.addLast(getRandomOrder());
-		  }
 	    }	
 	
 	/**
@@ -134,7 +127,6 @@ public class OrderControl implements Tickable, Picker {
 	/**
 	 * @author Casey Kolodziejczyk
 	 * @param Item
-	 * @param Shelf
 	 * @return OrderItem from Shelf
 	 * Takes an shelf and an Item and then takes the item
 	 * off of the shelf and turns it into an OrderItem
@@ -147,7 +139,14 @@ public class OrderControl implements Tickable, Picker {
 		OrderItem orderProd = new OrderItem(itemTook);
 		return orderProd;
 	}
-	
+	/**
+	 * @author Casey Kolodziejczyk
+	 * @param an Order
+	 * 
+	 * My original version for handling the job for orders and fulfilling orders
+	 *  	It because a bit messed up with recent iterations however, most of it
+	 *  	has been readjusted
+	 */
 	
 	public void startOrderProcess(Order todo) {
 		currentorder = todo;
@@ -168,17 +167,33 @@ public class OrderControl implements Tickable, Picker {
 			B.addBin(currentbin);
 		}
 	}
-
+	
+	/**
+	 * @author Casey Kolodziejczyk
+	 * @return the number of orders left in OrderControl
+	 * 
+	 * Simply tells the number of orders.
+	 * If the number is 0, it will generate a new random order
+	 */
 	public int orderAmount() {
 		System.out.println("There are " + allOrders.size() + " orders to be fulfilled");
+		if (allOrders.size() == 0){
+			makeOrder();
+		}
+		
 		return allOrders.size();
 	}
 
 	/**
-	 * @author Ted Herman
+	 * @author Ted Herman, Casey Kolodziejczyk
 	 * 
-	 * This tick method would be where Orders does the 
-	 * real work (see design README)
+	 * The location where Orders does the majority of the work
+	 * 
+	 * Entire Process consists of: Starting Order, Grabbing new bin, Find item shelf,
+	 * Request robot grab shelf, Remove item from shelf*, Place item in bin*, 
+	 * Request robot return shelf*, Complete Order, Place bin on Belt.
+	 * 
+	 * (Steps with * at end are handled within method notify)
 	 * 
 	 */
 	public void tick(int count) {
@@ -251,14 +266,16 @@ public class OrderControl implements Tickable, Picker {
 	
 	if (currentorder == null) {
 	  currentorder = allOrders.pop(); // start work
-	  System.out.println("Picker starts new order");
+	  System.out.println("\nPicker starts new order");
+	  System.out.println("Order information: \n\n" + currentorder.address + "\n" );
+	  System.out.println("Order consists of: " + currentorder + "\n");
 	  }
 			
 
 	// at this point, Orders is acting the Picker role, so it has 
 	// to look at the current order and decide what to do
 	if (currentbin == null && B.binAvailable()) {
-	  System.out.println("Picker got a new bin");
+	  System.out.println("Picker grabs a new bin from Belt");
 	  currentbin = B.getBin();
 	  }
 	if (currentbin == null) return;  // try again in another tick to get bin
@@ -267,8 +284,11 @@ public class OrderControl implements Tickable, Picker {
 	   // we have a bin, we have a filled order, so finish up this bin
 	   currentbin.order = currentorder;
 	   currentbin.setFinished();
+	   System.out.println("\nOrder has been finished!");
 	   currentorder = null;
-	   return;  // done! The Bin part will take it away from here.
+	   System.out.println("Picker places bin on the belt");
+	   B.addBin(currentbin); // Picker then places the Bin on the Belt
+	   return;  // done! 
 	   }
 		
 	// have we already requested a needed item? if yes, just wait for a 
@@ -298,22 +318,24 @@ public class OrderControl implements Tickable, Picker {
 	if (s == null) return;  // item not in warehouse, Inventory should replenish
 	neededitem = nextitem;  // remember the item needed when Robot arrives
 	
-	System.out.println("\nCurrent Shelf requesting: " + s);
-	System.out.println("\nCurrent Shelf home location"  + s.getHomeLocation());
-	System.out.println("\nCurrent Item shelf: "  + I.findItem(neededitem));
+	System.out.println("Picker requests robot grabs shelf: " + s);
+	System.out.println("Shelf requested home location: "  + s.getHomeLocation());
+	System.out.println("Location of needed item: "  + I.findItem(neededitem) + "\n");
 	
 	R.requestShelf(s,(Picker)this);  // pretend to be the picker
 	return;
 	   }
 
 	/**
-	  * @author Ted Herman
-	  * Picker event notify(robot), not finished.
+	  * @author Ted Herman, Casey Kolodziejczyk
+	  * @param Robot
+	  * @param Shelf 
+	  * 
+	  * Picker event that consists of the steps within tick that are:
+	  * Remove Item from shelf, Place item in bin, Tell Robot to return shelf
 	  */
 	public void notify(Robot r, Shelf s) { 
 	// should be code here to remove desired Item OrderItem from Shelf s
-	
-	
 	// (Inventory has a method to do that)
 	// mark that Item as being checked off in the Order
 	// and if this is the last Item needed, tell Belt 
@@ -325,20 +347,21 @@ public class OrderControl implements Tickable, Picker {
 	  if (atpicker[i].equals(neededitem)) found = i;
 	  }
 	
-	assert found > -1; 
-	Item got = I.removeItem(neededitem);		// Item removed from shelf
+	assert found > -1;
+	System.out.println("\nPicker takes item off of shelf");
+	I.removeItem(neededitem);		// Item removed from shelf
 	
 	for (OrderItem item: currentorder.order) {
 	  if (!item.inBin && item.equals(neededitem)) {  // take item from shelf
-		System.out.println("Picker item put in bin");
-		
-		currentbin.itemAdd(item);  // Adds item to bin (or should it add got?)
-		
+		System.out.println("Picker places " + item + " in Bin");
+		currentbin.itemAdd(item);  // Adds item to bin 
+		System.out.println("Bin now consists of :" + currentbin);
 		item.inBin = true;  // put item in bin  
 		break;
 	    }
 	  }
 	neededitem = null;   // no longer need this item
+	System.out.println("\nPicker tells robot to return shelf");
 	R.returnShelf(r);  // tell Robot to return Shelf back to its home
 	};
 	
@@ -351,6 +374,7 @@ public class OrderControl implements Tickable, Picker {
 	   * and perhaps multiple new orders could be created in one call  
 	   */
 	  private void makeOrder() {
+		System.out.println("Generating a new order!");
 		allOrders.add(getRandomOrder());
 	    };
 	  

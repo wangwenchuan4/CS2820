@@ -13,7 +13,6 @@ public class Order implements Picker {
 	private Belt B;
 	
 	List<OrderItem> order;  // current order to fulfill
-	//List<OrderItem> bin = new ArrayList<OrderItem>(); // bin being filled (this will be another object from belt)
 	Bin bin = new Bin();
 	String address;
 	String status;
@@ -70,15 +69,6 @@ public class Order implements Picker {
 		Shelf itemLoc = needed.getShelf();
 		return itemLoc.homeLocation;
 	   }
-
-	
-	
-	public void tellRobotGet(Shelf needed){
-		//Robot.goTo(needed.currentLocation);
-	  }
-	
-	
-	
 	
 	/**
 	 * @author Casey Kolodziejczyk
