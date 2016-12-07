@@ -135,6 +135,10 @@ public class InventoryTest {
 		assertEquals(number, 5 + stockSize);
 	}
 	
+	/**
+	 * Tests the onShelf method
+	 * @author Grant Gertsen
+	 */
 	@Test
 	public void onShelfTest() {
 		System.out.println("ON SHELF TEST");

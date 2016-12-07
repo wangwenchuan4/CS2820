@@ -36,7 +36,7 @@ public class Address {
 		String ZipCode = randomZip();
 		String Address = FirstName + " " +
 		  LastName + "\n" + StreetNumber + " " +
-		  StreetName + "\n" + City + " " + State + ZipCode;
+		  StreetName + "\n" + City + " " + State + " " + ZipCode;
 		return Address;
 	    }
 	  /**

@@ -134,7 +134,7 @@ public class Order implements Picker {
 	public boolean orderFulfilled() {		
 		if (compareOrder()) {
 			setFilled();
-			//System.out.println("Order : [" + address + "] has been completed! \n");
+			System.out.println("Order : [" + address + "] has been completed! \n");
 			return true;
 		}
 		else {

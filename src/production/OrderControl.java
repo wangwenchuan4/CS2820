@@ -287,7 +287,7 @@ public class OrderControl implements Tickable, Picker {
 	   System.out.println("\nOrder has been finished!");
 	   currentorder = null;
 	   System.out.println("Picker places bin on the belt");
-	   B.addBin(currentbin); // Picker then places the Bin on the Belt
+	   //B.addBin(currentbin); // Picker then places the Bin on the Belt
 	   return;  // done! 
 	   }
 		

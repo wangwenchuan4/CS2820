@@ -93,7 +93,7 @@ public class MockFloor implements Floor {
 	  }
 	  return chargers[place];
 	   }
-  public Point getCharger2() { return charger2; }
+
   public List<Point> getBeltArea() {
 	ArrayList<Point> beltarea = new ArrayList<Point>();
 	for (int i=picker.y; i>=0; i--) {

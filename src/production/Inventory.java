@@ -211,7 +211,7 @@ public class Inventory implements Tickable {
 	}
 
 	/**
-	 * Keeps track of items that have been ordered
+	 * Keeps track of items that have been ordered to restock later
 	 * 
 	 * @author Grant Gertsen
 	 * @param item
@@ -225,6 +225,7 @@ public class Inventory implements Tickable {
 	 * Restocks items that were ordered, or adds them if they weren't in stock.
 	 * 
 	 * @author Grant Gertsen
+	 * @author Ted Herman (for the floor parts of the code)
 	 */
 	public void restock() {
 		if (orderedItems.size() == 0) {
@@ -243,6 +244,7 @@ public class Inventory implements Tickable {
 
 	/**
 	 * Debugging method to show all items in stock
+	 * 
 	 * @author Grant Gertsen
 	 */
 	public void printItems() {
@@ -252,9 +254,9 @@ public class Inventory implements Tickable {
 	}
 
 	/**
-	 * @author Grant Gertsen
-	 * Only "active" thing for inventory is to restock every so often
-	 * We are currently not using a "dock", just automatic generation.
+	 * @author Grant Gertsen Only "active" thing for inventory is to restock
+	 *         every so often We are currently not using a "dock", just
+	 *         automatic generation.
 	 */
 	@Override
 	public void tick(int count) {
@@ -268,6 +270,7 @@ public class Inventory implements Tickable {
 
 /**
  * A catalog of items that can be used
+ * 
  * @author Ted Herman
  *
  */
