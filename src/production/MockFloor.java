@@ -11,15 +11,15 @@ public class MockFloor implements Floor {
   /**
    * A fake Floor component for testing purposes only
    */
-  static final int warehousewidth = 160;
-  static final int warehousedepth = 200;
+  static final int warehousewidth = 40;
+  static final int warehousedepth = 50;
 
-  final Point picker = new Point(0,190);
-  final Point packer = new Point(0,50);
+  final Point picker = new Point(0,48);
+  final Point packer = new Point(0,12);
   final Point shippingdock = new Point(0,0);
-  final Point receivingdock = new Point(80,0);
-  final Point charger = new Point(20,20);
-  final Point charger2 = new Point(21,20);
+  final Point receivingdock = new Point(20,0);
+  final Point charger = new Point(5,5);
+  final Point charger2 = new Point(6,5);
 
   Point[] chargers;
   List<ShelfArea> shelfareas;
@@ -33,9 +33,9 @@ public class MockFloor implements Floor {
   public MockFloor(SimRandom rand) {
     randogen = rand;
     shelfareas = new ArrayList<ShelfArea>();
-    shelfareas.add(new ShelfArea(new Point(20,100),140, randogen));
-    shelfareas.add(new ShelfArea(new Point(20,140),140, randogen));
-    shelfareas.add(new ShelfArea(new Point(20,160),140, randogen));
+    shelfareas.add(new ShelfArea(new Point(5,20),35, randogen));
+    shelfareas.add(new ShelfArea(new Point(5,35),35, randogen));
+    shelfareas.add(new ShelfArea(new Point(5,40),35, randogen));
     allpoints = new HashMap<String,Cell>();
     // make a map of all cells that the warehouse has, where
     // each cell is one "square" on the floor

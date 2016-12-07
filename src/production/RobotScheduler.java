@@ -15,8 +15,8 @@ public class RobotScheduler implements Tickable{
 	public RobotScheduler(Floor F){
 		this.F = F;
 		robots = new Robot[2];
-		Point st1 = new Point(20,19);
-		Point st2 = new Point(21,19);
+		Point st1 = new Point(5,4);
+		Point st2 = new Point(5,5);
 		robots[0] = new Robot(st1);
 		robots[1] = new Robot(st2);
 		Cell t = F.getCell(st1);

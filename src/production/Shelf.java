@@ -75,7 +75,7 @@ public class Shelf {
 	 */
 	@Override
 	public String toString() {
-		return ("SHELF: " + homeLocation + "");
+		return ("Shelf: " + homeLocation + "");
 	}
 
 }

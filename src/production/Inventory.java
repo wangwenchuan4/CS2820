@@ -34,6 +34,7 @@ public class Inventory implements Tickable {
 				Item n = new Item(CatItem.catalog[j]);
 				Point p = floor.randomInShelfArea();
 				Cell c = floor.getCell(p);
+				//System.out.println(p);
 				n.changeShelf((Shelf) c.getContents());
 				this.addItem(n);
 			}
@@ -225,7 +226,7 @@ public class Inventory implements Tickable {
 	 * Restocks items that were ordered, or adds them if they weren't in stock.
 	 * 
 	 * @author Grant Gertsen
-	 * @author Ted Herman (for the floor parts of the code)
+	 * @author Ted Herman (for 
 	 */
 	public void restock() {
 		if (orderedItems.size() == 0) {
