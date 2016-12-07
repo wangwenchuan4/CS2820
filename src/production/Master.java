@@ -1,8 +1,8 @@
 package production;
 
-import java.util.*;
+
 /**
- *  @author wenchuan wang @author Ted Herman
+ *  @author wenchuan wang 
  * master class is the main program to run the simulation by passing tick to each component
  */
 

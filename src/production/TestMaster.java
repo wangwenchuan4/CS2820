@@ -1,6 +1,6 @@
 package production;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 
 /**
  * 
@@ -15,12 +15,12 @@ public class TestMaster {
    @Test
    public void test() {
 		
-		Floor F = new Floor();
-		RobotScheduler R = new RobotScheduler();
-		OrderControl O = new OrderControl();	
-		Belt B = new Belt();
-		Inventory I = new Inventory();
-		Visualizer V= new Visualizer();
+		MockFloor F = new MockFloor();
+		MockRobotScheduler R = new MockRobotScheduler();
+		MockOrderControl O = new MockOrderControl();	
+		MockBelt B = new MockBelt();
+		MockInventory I = new MockInventory();
+		MockVisualizer V= new MockVisualizer();
 		Master m=new Master( F, R, I, O, B, V);
 		
 		m.run(30);
@@ -29,24 +29,27 @@ public class TestMaster {
    }
    
    
-   
+   /**
+    *  @author wenchuan wang 
+    * master class is the main program to run the simulation by passing tick to each component
+    */
    public class Master {
 	    
 
-		private RobotScheduler rob;
-		private Floor flo;
-		private OrderControl ord;
-		private Inventory inv;
-	    private Belt bel;
-	    private Visualizer vis;
+		private MockRobotScheduler rob;
+		private MockFloor flo;
+		private MockOrderControl ord;
+		private MockInventory inv;
+	    private MockBelt bel;
+	    private MockVisualizer vis;
 	    
 	    /**
-	     * @author wenchuan wang @author Ted Herman
+	     * @author wenchuan wang 
 	     * @param floor, robot, inventory, order, belt, inventory
 	     * master constructors create an instance of all component 
 	     * 
 	     */
-	public Master(Floor floor, RobotScheduler robot,Inventory inventory,OrderControl order, Belt belt, Visualizer visualizer){
+	public Master(MockFloor floor, MockRobotScheduler robot,MockInventory inventory,MockOrderControl order, MockBelt belt, MockVisualizer visualizer){
 			
 		//count =0;
 		
@@ -88,17 +91,17 @@ public class TestMaster {
    
    
    /**
-    * all the mock classes for master testing
-    * @author Wenchuan
+    * all the mock classes for each component 
+    * @author Wenchuan Wang
     *
     */
    
-   class Belt implements Tickable{
+   class MockBelt implements Tickable{
 		
 		Master master;
 		int currentTime;
 		
-		public Belt( ){
+		public MockBelt( ){
 			
 		}
 		
@@ -121,12 +124,12 @@ public class TestMaster {
 		
 	}
    
-   public class Floor implements Tickable{
+   public class MockFloor implements Tickable{
 		
 		Master master;
 		int currentTime;
 		
-		public Floor(){
+		public MockFloor(){
 			
 		}
 		
@@ -148,12 +151,12 @@ public class TestMaster {
 		
 		
 	}
-public class Inventory implements Tickable{
+public class MockInventory implements Tickable{
 	
 	Master master;
 	int currentTime;
 
-	public Inventory(){
+	public MockInventory(){
 		
 	}
 	
@@ -176,12 +179,12 @@ public class Inventory implements Tickable{
 	
 	
 }
-public class OrderControl implements Tickable{
+public class MockOrderControl implements Tickable{
 	
 	
 	int currentTime;
 
-	public OrderControl(){
+	public MockOrderControl(){
 		
 	}
 	
@@ -204,16 +207,13 @@ public class OrderControl implements Tickable{
 	
 	
 }
-/**
-*
-* @author wenchwang
-*/
-//assume robot event takes 5 tick
-public class RobotScheduler implements Tickable {
+
+
+public class MockRobotScheduler implements Tickable {
   	Master master;
       int currentTime;
 		
-  public RobotScheduler(){
+  public MockRobotScheduler(){
 			
 		}
   
@@ -241,17 +241,14 @@ public class RobotScheduler implements Tickable {
         
               
 }
-/**
-*
-* @author wenchwang
-*/
-//assume Visualizer event takes 3 tick
-public class Visualizer implements Tickable{
+
+
+public class MockVisualizer implements Tickable{
 		
 		Master master;
 		int currentTime;
 
-		public Visualizer(){
+		public MockVisualizer(){
 			
 		}
 		

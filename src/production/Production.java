@@ -2,7 +2,7 @@ package production;
 /**
  * 
  * @author Wenchuan
- *main class to create instance of each component and run the simulation of the warehouse
+ *main class to create instances of each component and run the simulation of the warehouse
  */
 public class Production {
 	public static void main(String[] args){
