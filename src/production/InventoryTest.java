@@ -2,7 +2,6 @@ package production;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import java.util.*;
 
 public class InventoryTest {
 
@@ -70,18 +69,19 @@ public class InventoryTest {
 	 * 
 	 * @author Grant Gertsen I need to find a better way to test this now...
 	 */
-	 @Test
-	 public void findItemTest() {
-	 SimRandom nums = new SimRandom();
-	 Floor floor = new MockFloor(nums);
-	 Inventory items = new Inventory(floor, nums);
-	 //items.printItems();
-	 items.shelveItems();
-	 CatItem[] allItems = CatItem.catalog;
-	 Shelf temp = items.findItem(new Item(allItems[0]));
-	 System.out.println("TEST PRINT: " + temp);
-//	 assertEquals(temp,shelf2);
-	 }
+	@Test
+	public void findItemTest() {
+		SimRandom nums = new SimRandom();
+		Floor floor = new MockFloor(nums);
+		Inventory items = new Inventory(floor, nums);
+		// items.printItems();
+		items.shelveItems();
+		CatItem[] allItems = CatItem.catalog;
+		Shelf temp = items.findItem(new Item(allItems[0]));
+		System.out.println("TEST PRINT: " + temp);
+		// assertEquals(temp,shelf2);
+	}
+
 	/**
 	 * Testing removing items from the Inventory class
 	 * 
@@ -92,12 +92,10 @@ public class InventoryTest {
 		SimRandom nums = new SimRandom();
 		Floor floor = new MockFloor(nums);
 		Inventory items = new Inventory(floor, nums);
-		Shelf shelf1 = new Shelf(new Point(1, 1));
-		Shelf shelf2 = new Shelf(new Point(1, 2));
-		Shelf shelf3 = new Shelf(new Point(5, 4));
+		Shelf shelf1 = new Shelf(new Point(1, 2));
 		CatItem[] allItems = CatItem.catalog;
-		Item item1 = new Item(allItems[nums.nextInt(100)], shelf2);
-		Item item2 = new Item(allItems[nums.nextInt(100)], shelf2);
+		Item item1 = new Item(allItems[nums.nextInt(100)], shelf1);
+		Item item2 = new Item(allItems[nums.nextInt(100)], shelf1);
 		items.addItem(item1);
 		items.addItem(item2);
 		Item removedItem = items.removeItem(item1);
@@ -134,9 +132,10 @@ public class InventoryTest {
 
 		assertEquals(number, 5 + stockSize);
 	}
-	
+
 	/**
 	 * Tests the onShelf method
+	 * 
 	 * @author Grant Gertsen
 	 */
 	@Test

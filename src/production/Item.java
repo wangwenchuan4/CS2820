@@ -2,8 +2,8 @@ package production;
 
 public class Item {
 
-	String itemName;
-	int serialNumber;
+	final String itemName;
+	final int serialNumber;
 	Shelf shelf;
 
 	/**

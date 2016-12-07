@@ -2,13 +2,9 @@ package production;
 
 public class Shelf {
 
-//	static final int maxItems = 5;
-
 	Point homeLocation;
 	Point currentLocation;
 	boolean resting; // true if at home, not on robot
-//	List<Item> shelfStock;
-	
 
 	/**
 	 * Initialize shelf at a given point.
@@ -20,9 +16,7 @@ public class Shelf {
 		homeLocation = home;
 		currentLocation = home;
 		resting = true;
-		//shelfStock = new ArrayList<Item>(maxItems);
 	}
-
 
 	/**
 	 * Gets current location
@@ -35,6 +29,16 @@ public class Shelf {
 	}
 
 	/**
+	 * Set the location at point p
+	 * 
+	 * @author Grant Gertsen
+	 * @param p
+	 */
+	public void setLocation(Point p) {
+		currentLocation = p;
+	}
+
+	/**
 	 * Where the shelf was initialized at
 	 * 
 	 * @author Grant Gertsen
@@ -43,32 +47,34 @@ public class Shelf {
 	public Point getHomeLocation() {
 		return homeLocation;
 	}
-		
+
+	/**
+	 * For the robot to pickup the shelf
+	 * @author Grant Gertsen
+	 */
 	public void pickup() {
 		System.out.println("Picked up shelf!");
 		resting = false;
 	}
-	
+
 	/**
-	 * 
+	 * For the robot to put the shelf down
 	 * @author Grant Gertsen
 	 */
 	public void putdown() {
 		System.out.println("Put down shelf!");
 		resting = true;
 	}
+
 	/**
 	 * needed a method to ask if the shelf is resting for RobotScheduler
+	 * 
 	 * @author Andrew Marburg
 	 * @return true if shelf is resting
 	 */
-	public boolean isResting(){
+	public boolean isResting() {
 		return resting;
 	}
-	/**
-	 * Prints out all items on the shelf
-	 * @author Grant Gertsen
-	 */
 
 	/**
 	 * @author Casey Kolodziejczyk Just overrides toString for testing purposes

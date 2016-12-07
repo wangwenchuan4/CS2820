@@ -3,7 +3,6 @@ package production;
 import java.util.*;
 
 /**
- * 
  * @author Grant Gertsen
  */
 public class Inventory implements Tickable {
@@ -34,7 +33,7 @@ public class Inventory implements Tickable {
 				Item n = new Item(CatItem.catalog[j]);
 				Point p = floor.randomInShelfArea();
 				Cell c = floor.getCell(p);
-				//System.out.println(p);
+				// System.out.println(p);
 				n.changeShelf((Shelf) c.getContents());
 				this.addItem(n);
 			}
@@ -54,16 +53,17 @@ public class Inventory implements Tickable {
 	}
 
 	/**
-	 * Remove an item from the inventory and the shelf it is on.
+	 * Remove an item from the inventory and shelf, and returns the item
 	 * 
 	 * @author Grant Gertsen
 	 * @param item
+	 * @return the item that was removed
 	 */
 	public Item removeItem(Item item) {
 		Item removed = new Item(item.getItemName(), item.getSerialNumber());
 		System.out.println("Inventory: Removing " + item + " from shelf at " + item.getShelf());
 		stock.remove(item);
-		this.orderedItem(item);
+		this.orderItem(item);
 		return removed;
 	}
 
@@ -193,7 +193,9 @@ public class Inventory implements Tickable {
 	}
 
 	/**
-	 * Gets an item array of all items on the shelf
+	 * Gets an item array of all items on the shelf The professor's code does
+	 * this efficiently and gives orders exactly what they need, so I am using
+	 * this.
 	 * 
 	 * @author Ted Herman
 	 * @param shelf
@@ -212,13 +214,13 @@ public class Inventory implements Tickable {
 	}
 
 	/**
-	 * Keeps track of items that have been ordered to restock later
+	 * Orders an item to get brought in on the next shipment.
 	 * 
 	 * @author Grant Gertsen
 	 * @param item
 	 *            the item ordered
 	 */
-	public void orderedItem(Item item) {
+	public void orderItem(Item item) {
 		orderedItems.add(item);
 	}
 
@@ -226,7 +228,7 @@ public class Inventory implements Tickable {
 	 * Restocks items that were ordered, or adds them if they weren't in stock.
 	 * 
 	 * @author Grant Gertsen
-	 * @author Ted Herman (for 
+	 * @author Ted Herman
 	 */
 	public void restock() {
 		if (orderedItems.size() == 0) {
