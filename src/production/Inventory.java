@@ -61,7 +61,7 @@ public class Inventory implements Tickable {
 	 */
 	public Item removeItem(Item item) {
 		Item removed = new Item(item.getItemName(), item.getSerialNumber());
-		System.out.println("Inventory: Removing " + item + " from shelf at " + item.getShelf());
+		System.out.println("Inventory: Removing " + item + " from shelf.");
 		stock.remove(item);
 		this.orderItem(item);
 		return removed;
@@ -178,8 +178,13 @@ public class Inventory implements Tickable {
 			if (e.equals(item))
 				return e.getShelf();
 		}
-		System.out.println("Item not in stock, will order more!");
-		orderedItems.add(item);
+		System.out.println(item + " not in stock, will order more!");
+		for(Item i : orderedItems) {
+			if(item.equals(i)) {
+				return null;
+			}
+		}
+		orderItem(item);
 		return null;
 	}
 
@@ -205,6 +210,14 @@ public class Inventory implements Tickable {
 		List<Item> scan = new ArrayList<Item>();
 		Item[] returnpattern = new Item[0];
 		for (Item e : stock) {
+			// System.out.println(e);
+			if (e.getShelf() == null) {
+				System.out.println("Whoops! A " + e.getItemName() + " fell on the floor! We'll put it back.");
+				Point p = floor.randomInShelfArea();
+				Cell c = floor.getCell(p);
+				e.changeShelf((Shelf) c.getContents());
+				continue;
+			}
 			if (!(e.getShelf().getHomeLocation()).equals(shelf.getHomeLocation()))
 				continue;
 			// System.out.println(e + " is on " + shelf);
@@ -231,18 +244,22 @@ public class Inventory implements Tickable {
 	 * @author Ted Herman
 	 */
 	public void restock() {
-		if (orderedItems.size() == 0) {
+		if (orderedItems.size() == 0 || stock.size() > 1000) {
 			return;
 		}
 		System.out.println("Restocking " + orderedItems.size() + " items!");
 		for (Item item : orderedItems) {
 			Item n = new Item(item.getItemName(), item.getSerialNumber());
-			Point p = floor.randomInShelfArea();
-			Cell c = floor.getCell(p);
-			n.changeShelf((Shelf) c.getContents());
+			n.changeShelf(stock.get(randNums.nextInt(stock.size())).getShelf());
+			System.out.println(n);
 			this.addItem(n);
+			if(item.getShelf() == null) {
+				continue;
+			}
+			orderedItems.remove(item);
 		}
 		orderedItems.clear();
+		orderedItems.trimToSize();
 	}
 
 	/**
@@ -264,7 +281,7 @@ public class Inventory implements Tickable {
 	@Override
 	public void tick(int count) {
 		time = count;
-		shelveItems();
+		//shelveItems();
 		if (time % 500 == 0) {
 			restock();
 		}
