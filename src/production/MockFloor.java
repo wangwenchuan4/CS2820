@@ -82,7 +82,7 @@ public class MockFloor implements Floor {
   
   /**
    * @author Andrew Marburg
-   * method that will return a charger from the list of chargers
+   * method that will return a charger not being used from the list of chargers
    */
   public Point getCharger() {
 	  int place = 1;

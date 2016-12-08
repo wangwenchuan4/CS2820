@@ -116,7 +116,7 @@ public class Robot {
 		}
 		/**
 		 * @author Andrew Marburg
-		 * method that charges the battery for 20 ticks then sets 
+		 * method that charges the battery for 2 ticks then sets 
 		 * the status to idle when fully charged
 		 */
 		private void charge(int i){
