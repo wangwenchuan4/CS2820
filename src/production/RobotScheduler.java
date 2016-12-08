@@ -30,30 +30,16 @@ public class RobotScheduler implements Tickable{
 		
 		
 	}
-		
+		/**
+		 * @author Andrew Maburg
+		 * added batteryUsage to tick in order to drain the robot's battery
+		 */
 	public void tick(int count) { 
 		
 		// Look to see if any Robot should move
 		//for (Robot e: robots) {
 		
-		/**for (int y = 0; y<2; y++){
-			if (robots[y].destination != null){
-				List<Point> pointList = robots[y].destination;
-				for(int x = 0; x<2; x++){
-					if (robots[x].destination != null){
-						List<Point> listPoint = robots[x].destination;
-						if(pointList.get(0) == listPoint.get(0)){
-							System.out.println("Collision between Robot " + y + " and Robot " + x + " at location " + pointList.get(0));
-						
-						}
-					}
-				}
-				
-			}
-			
-		}
 		
-		**/
 		for (int i = 0; i<3; i++) {
 			robots[i].batteryUsage(i);
 		   if (robots[i].destination != null) moveRobot(robots[i], i);
@@ -64,10 +50,13 @@ public class RobotScheduler implements Tickable{
 	    
 	    
 	    
-	  /**
+	  /**@author Ted Herman and Andrew Marburg
 	   * @param r is a Robot to move along its path, and if
 	   * the Robot reaches the end of the path, then decide
 	   * on where it should go next (if anywhere).
+	   * @Andrew Marburg
+	   * I changed this method by adding a way to track which robot is being moved
+	   * and added print statments to show it's movements at key times
 	   */
 	  private void moveRobot(Robot r, int i) { 
 	    // some initial assertions say what is the expected precondition
@@ -98,7 +87,8 @@ public class RobotScheduler implements Tickable{
 		   assert tempcell.getContents() instanceof Shelf;
 		   assert r.shelf == tempcell.getContents();
 		   tempcell.setShadow(r);
-		   System.out.println("Robot " + i + " is Picker Shelf Bound");
+		   
+		   System.out.println("Robot " + (i+1) + " is Picker Shelf Bound");
 		   }
 		
 		// in any other case, cell should empty
@@ -118,13 +108,17 @@ public class RobotScheduler implements Tickable{
 		   assert !r.shelf.isResting();
 		   r.destination = F.getPath(r.location,F.getPicker());
 		   r.state = Robot.pickerbound;  // now heading to Picker
-		   System.out.println("Robot " + i + " state is pickerbound");
+		   System.out.println("");
+		   System.out.println("Robot " + (i+1) + "'s Location is " + robots[i].location);
+		   System.out.println("Robot " + (i+1) + " state is pickerbound");
 		   System.out.println("");
 		   break;
 		case Robot.pickerbound:
 		   r.state = Robot.atpicker;
 		   r.picker.notify(r,r.shelf);
-		   System.out.println("Robot " + i + " is at Picker");
+		   System.out.println("");
+		   System.out.println("Robot " + (i+1) + "'s Location is " + robots[i].location);
+		   System.out.println("Robot " + (i+1) + " is at Picker");
 		   System.out.println("");
 		   break;
 		case Robot.afterdockshelfbound:
@@ -136,7 +130,9 @@ public class RobotScheduler implements Tickable{
 		   r.shelf = null;
 		   r.destination = F.getPath(goal,F.getCharger());
 		   r.state = Robot.chargerbound;
-		   System.out.println("Robot " + i + " is Homeward Bound");
+		   System.out.println("");
+		   System.out.println("Robot " + (i+1) + "'s Location is " + robots[i].location);
+		   System.out.println("Robot " + (i+1) + " is Homeward Bound");
 		   System.out.println("");
 		   break;
 		case Robot.dockshelfbound:
@@ -153,7 +149,10 @@ public class RobotScheduler implements Tickable{
 		   break;   // just wait around in these cases
 		case Robot.chargerbound:
 		   r.state = Robot.idle;
-		   System.out.println("Robot " + i + " is Idle");
+		   System.out.println("");
+		   System.out.println("Robot " + (i+1) + "'s Location is " + robots[i].location);
+		   System.out.println("Robot " + (i+1) + " is Idle");
+		   System.out.println("");
 		   r.batteryUsage(i);
 		   break;
 		   }
@@ -261,6 +260,7 @@ public class RobotScheduler implements Tickable{
 	   * method to see if the robots next movement will hit another robot
 	   * @param r
 	   * @return true if there will be a collision
+	   * Couldn't figure out how to get it to return true
 	   */
 
 	  

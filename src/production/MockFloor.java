@@ -18,8 +18,9 @@ public class MockFloor implements Floor {
   final Point packer = new Point(0,12);
   final Point shippingdock = new Point(0,0);
   final Point receivingdock = new Point(20,0);
-  final Point charger = new Point(5,5);
-  final Point charger2 = new Point(6,5);
+  final Point charger = new Point(4,5);
+  final Point charger2 = new Point(5,5);
+  final Point charger3 = new Point(6,5);
 
   Point[] chargers;
   List<ShelfArea> shelfareas;
@@ -53,9 +54,10 @@ public class MockFloor implements Floor {
           }
         allpoints.put(P.toString(),N);
         }
-    chargers = new Point[2];
+    chargers = new Point[3];
     chargers[0] = charger;
     chargers[1] = charger2;
+    chargers[2] = charger3;
     }
   /**
    * @author Ted Herman
@@ -84,8 +86,8 @@ public class MockFloor implements Floor {
    */
   public Point getCharger() {
 	  int place = 1;
-	  for(int i = 0; i<2; i++){
-		  Cell y = getCell(chargers[1]);
+	  for(int i = 0; i<3; i++){
+		  Cell y = getCell(chargers[i]);
 		  if(y.getContents() == null ){
 			  place = i;
 			  return chargers[i];
@@ -102,6 +104,47 @@ public class MockFloor implements Floor {
 	return beltarea;
     }
 
+  
+ /*** @author Andrew Marburg
+  * method that will be called to provide the a robot with a new path if it
+  * is about to collide with another robot
+  * @param oldPath
+  * @return newPath for the Robot to traverse
+  * isn't used because I couldnt get it to be called
+  */
+ 
+ public List<Point> getNewPath(List<Point> old, Point currLoc){
+	  System.out.println("GOT NEW PATH");
+	  Point curr = new Point(currLoc.x,currLoc.y);
+	  Point next = new Point(old.get(0).x,old.get(0).y);
+	 // LinkedList<Point> L = new LinkedList<Point>();
+	  if (curr.y > next.y || curr.y < next.y){
+		  
+		  old.add(0, curr.right());
+		  old.add(1,curr);
+		 /** for(Point e: old){
+			  L.add(e);
+		  }**/
+	  
+		  
+	  }
+	  if (curr.x > next.x || curr.x < next.x){
+		  old.add(curr.below());
+		  old.add(curr);
+		/**  for(Point e: old){
+			  L.add(e);
+	  }**/
+	  
+	  
+	  
+  }
+	  return old;
+  }
+
+
+  
+  
+  
   /**
    * Get path for robot
    * @author Grant Gertsen
@@ -112,7 +155,7 @@ public class MockFloor implements Floor {
   public List<Point> getPath(Point s,Point t) {
 	LinkedList<Point> L = new LinkedList<Point>();
 	Point temp = new Point(s.x, s.y);
-	System.out.println("Robot starts at " + temp + " and ends at " + t);
+	System.out.println( "Robot at " + s + " is on it's way to " + t);
 	L.addFirst(s);
 		while (temp.y != t.y) {
 			if(temp.y > t.y) {

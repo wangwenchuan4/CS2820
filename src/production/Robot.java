@@ -123,7 +123,7 @@ public class Robot {
 			if(charg<2){
 				charg = charg + 1;
 				
-				System.out.println("Robot " + i + " is Charging");
+				System.out.println("Robot " + (i+1) + " is Charging");
 				
 			}
 			
@@ -131,8 +131,8 @@ public class Robot {
 				battery = 100;
 				charg = 0;
 				state = idle;
-				System.out.println("Robot " + i + " is Charged");
-				System.out.println("Robot " + i + " is Idle");
+				System.out.println("Robot " + (i+1) + " is Charged");
+				System.out.println("Robot " + (i+1) + " is Idle");
 			}
 			
 			
