@@ -8,12 +8,12 @@ import java.util.List;
  */
 public class Order implements Picker {
 	
-	private Inventory I;
-	private RobotScheduler R;
-	private Belt B;
+	//private Inventory I;			These three were previously needed, but uses for
+	//private RobotScheduler R;		have been transfered over to OrderControl      
+	private Belt B;				 
 	
 	List<OrderItem> order;  // current order to fulfill
-	Bin bin = new Bin();
+	Bin bin;
 	String address;
 	String status;
 	boolean isFilled; 
@@ -76,18 +76,19 @@ public class Order implements Picker {
 	 * each time a new order is started.
 	 */
 	public void getNewBin(){
+		//bin = B.getBin();
 		bin = new Bin();
 	}
 
-	/** 
-	 * @author Casey Kolodziejczyk
-	 * @return the bin
-	 * This simply returns the bin in its current state, could be used to check if enough items are in it.
-	 */
-	public Bin getItems() {
-		// Return the Bin? or the items of the bin? 
-		return bin;
-	}
+	///** 
+	// * @author Casey Kolodziejczyk
+	// * @return the bin
+	// * This simply returns the bin in its current state, could be used to check if enough items are in it.
+	// */
+	//public Bin getItems() {
+	//	// Return the Bin? or the items of the bin? 
+	//	return bin;
+	//}
 	
 	/**
 	 * @author Casey Kolodziejczyk
@@ -156,10 +157,13 @@ public class Order implements Picker {
 	 * @param Shelf
 	 * Used to notify other sections when the robot has 
 	 * arrived to the picker with the shelf needed
+	 * 
+	 * Implementiation of Notify got moved to OrderControl
 	 */
 	@Override
 	public void notify(Robot r, Shelf s) {
 		}
+	
 	/**
 	 * @author Casey Kolodziejczyk
 	 * For testing and printing out Order objects

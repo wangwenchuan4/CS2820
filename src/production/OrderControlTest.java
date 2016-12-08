@@ -16,6 +16,8 @@ public class OrderControlTest {
 	 *  Original test to generate new Orders and fulfill them
 	 *  Simply follows the process of completing an order and prints
 	 *  out the steps as they are completed. Used for debugging
+	 *  
+	 *  Primary test for the methods within orders instead of a bunch of individual tests.
 	 */
 	@Test
 	public void testCompleteSomeOrders() {
@@ -31,14 +33,16 @@ public class OrderControlTest {
 		System.out.println("Orders in OC: " + O.orderAmount());
 		System.out.println("Orders in OC (After): " + O.allOrders);
 		// Keeps getting stuck at Get Path. Work from there from that. 
-		//O.tick(30);
+		
+		
+		//O.tick(30);     // or test tick if you want to
 		//Master m = new Master(F, R, I, O, B);
  		//m.run(30);
 		
 		O.completeNextOrder();
 		
 		O.orderAmount();
-		System.out.println("Orders in OC (After): " + O.allOrders);
+		System.out.println("Orders in OC (After): " + O.allOrders); // Change allOrders to not private if using
 		
 		O.completeNextOrder();
 		

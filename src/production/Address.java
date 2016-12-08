@@ -1,5 +1,10 @@
 package production;
 
+	/**
+	 * Contains all of the methods and information in order 
+	 * to create an address. Each Order will have an address with it 
+	 */
+
 public class Address {
 	
 	/**
@@ -107,7 +112,5 @@ public class Address {
 	      ZipCode += "0123456789".charAt(SR.nextInt(10));
 	    return ZipCode;
 	  }	
-	
-
 
 }
