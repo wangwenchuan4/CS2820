@@ -32,13 +32,13 @@ public class RobotScheduler implements Tickable{
 		// Look to see if any Robot should move
 		//for (Robot e: robots) {
 		
-		/**for (int y = 0; y<2; y++){
+		for (int y = 0; y<2; y++){
 			if (robots[y].destination != null){
 				List<Point> pointList = robots[y].destination;
 				for(int x = 0; x<2; x++){
 					if (robots[x].destination != null){
 						List<Point> listPoint = robots[x].destination;
-						if(pointList.get(0) == listPoint.get(0)){
+						if(pointList.get(0) == listPoint.get(0) && (x != y)){
 							System.out.println("Collision between Robot " + y + " and Robot " + x + " at location " + pointList.get(0));
 						
 						}
@@ -49,12 +49,12 @@ public class RobotScheduler implements Tickable{
 			
 		}
 		
-		**/
+		
 		for (int i = 0; i<2; i++) {
 			robots[i].batteryUsage(i);
 		   if (robots[i].destination != null) moveRobot(robots[i], i);
 		   }
-	    };	
+	    }
 	    
 	    
 	    
