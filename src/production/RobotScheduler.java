@@ -10,19 +10,23 @@ public class RobotScheduler implements Tickable{
 	/**
 	 * 
 	 * @author Andrew Marburg
-	 * intializing the robotScheduler with 2 robots
+	 * intializing the robotScheduler with 3 robots
 	 */
 	public RobotScheduler(Floor F){
 		this.F = F;
-		robots = new Robot[2];
-		Point st1 = new Point(5,4);
-		Point st2 = new Point(5,5);
+		robots = new Robot[3];
+		Point st1 = new Point(4,4);
+		Point st2 = new Point(5,4);
+		Point st3 = new Point(6,4);
 		robots[0] = new Robot(st1);
 		robots[1] = new Robot(st2);
+		robots[2] = new Robot(st3);
 		Cell t = F.getCell(st1);
 		t.setContents(robots[0]);
 		Cell y = F.getCell(st2);
 		y.setContents(robots[1]);
+		Cell x = F.getCell(st3);
+		x.setContents(robots[2]);
 		
 		
 	}
@@ -50,7 +54,7 @@ public class RobotScheduler implements Tickable{
 		}
 		
 		**/
-		for (int i = 0; i<2; i++) {
+		for (int i = 0; i<3; i++) {
 			robots[i].batteryUsage(i);
 		   if (robots[i].destination != null) moveRobot(robots[i], i);
 		   }
@@ -114,12 +118,14 @@ public class RobotScheduler implements Tickable{
 		   assert !r.shelf.isResting();
 		   r.destination = F.getPath(r.location,F.getPicker());
 		   r.state = Robot.pickerbound;  // now heading to Picker
-		  // System.out.println("Robot " + i + " state is pickerbound");
+		   System.out.println("Robot " + i + " state is pickerbound");
+		   System.out.println("");
 		   break;
 		case Robot.pickerbound:
 		   r.state = Robot.atpicker;
 		   r.picker.notify(r,r.shelf);
 		   System.out.println("Robot " + i + " is at Picker");
+		   System.out.println("");
 		   break;
 		case Robot.afterdockshelfbound:
 		case Robot.afterpickershelfbound:
@@ -131,6 +137,7 @@ public class RobotScheduler implements Tickable{
 		   r.destination = F.getPath(goal,F.getCharger());
 		   r.state = Robot.chargerbound;
 		   System.out.println("Robot " + i + " is Homeward Bound");
+		   System.out.println("");
 		   break;
 		case Robot.dockshelfbound:
 		   r.shelf.pickup();  // robot claims this shelf
@@ -211,12 +218,14 @@ public class RobotScheduler implements Tickable{
 		r.destination = F.getPath(r.location,r.shelf.getHomeLocation());
 		r.state = Robot.afterpickershelfbound;
 	    }
-	  /**
+	  
+	  /**@author Andrew Marburg
+	   * rewrote this method for more than one robot
 	   * find an available Robot (which is not in use)
 	   */
 	  public Robot findRobot() {
 		// currently there is only one robot, this is trivial
-		  for (int i = 0; i<2; i++) {
+		  for (int i = 0; i<3; i++) {
 			  if(robots[i].state == Robot.idle && robots[i].shelf == null){
 				  return robots[i];
 			  }
@@ -229,23 +238,54 @@ public class RobotScheduler implements Tickable{
 		
 		
 	  }
+
 	    
-	  /**
+	  /**@author Andrew Marburg
+	   * rewrote this method for more than one robot
 	   * @return true if a robot is available
 	   */
 	  public boolean robotAvailable() {
-		Robot r = robots[0];
-		Robot t = robots[1];
-		if(r.state == Robot.idle){
-			return true;
-		}
-		if(t.state == Robot.idle){
-			return true;
-		}
-		else{
-			return false;
-		}
+		  for(Robot e: robots){
+			  if(e.state == Robot.idle){
+				  return true;
+			  }
+		  }
+		  return false;
+		
 	    }
+
+
+	  
+	  /**
+	   * @author Andrew Marburg
+	   * method to see if the robots next movement will hit another robot
+	   * @param r
+	   * @return true if there will be a collision
+	   */
+
+	  
+	  
+	  public boolean collision(Robot r){
+		  System.out.println("gg");
+		  for(Robot e: robots){
+			  
+			  if (r != e){
+				  if(r.destination.get(0) ==e.destination.get(0)){
+				 
+					  System.out.println("COLISION");
+					  System.out.println("COLISION");
+					  System.out.println("COLISION");
+					  System.out.println("COLISION");
+					  return true;
+				  		}
+				  
+			  		}
+			  }
+		  
+			 return false;
+		  
+	  }
+
 	  }
 	
 	
