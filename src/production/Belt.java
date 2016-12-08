@@ -18,9 +18,16 @@ public class Belt implements Tickable {
 	ArrayList<Bin> currentBins = new ArrayList<Bin>();
 	Bin newBin;
 	
+	ArrayList<Bin> toBeShipped = new ArrayList<Bin>();
+	
 	String beltID;
 	
-	
+	/**
+	 * 
+	 * @author Peter Nelson
+	 * Constructor for Belt. Takes instance of Floor as parameter.
+	 * Gets the belt area from Floor.
+	 */
 	public Belt(Floor F) {
 		//this.beltID = beltID;
 		//this.beltCapacity = beltCapacity;
@@ -87,21 +94,35 @@ public class Belt implements Tickable {
 	 * @return
 	 */
 	public boolean binAvailable() {
-		if (newBin != null) return false;
+		if (newBin != null) {
+			return false;
+		}
+		
 		Cell c = F.getCell(F.getPicker());
-		if (c.getContents() != null) return false;
+		if (c.getContents() != null){
+			return false;
+		}
 		
 	return true;
 	}
 	
 	  private boolean isMovable() {
-			if (newBin != null) return false;  // wait for picker to finish bin
+			if (newBin != null) {
+				return false;  // wait for picker to finish bin
+			}
 			for (Point p: beltArea) {
 			  Cell c = F.getCell(p);
 			  Object o = c.getContents();
-			  if (o == null) continue;  // skip empty cell
-			  if ((o instanceof Bin) && !((Bin)o).isFinished()) return false;
-			  if ((o instanceof Parcel) && !((Parcel)o).isFinished()) return false;
+			  if (o == null) {
+				  continue;  // skip empty cell
+			  }
+			  if ((o instanceof Bin) && !((Bin)o).isFinished()) {
+				  return false;
+			  }
+			  
+			  if ((o instanceof Parcel) && !((Parcel)o).isFinished()) {
+				  return false;
+			  }
 			  }
 			return true;  // nothing stops belt from moving
 		}
@@ -114,25 +135,37 @@ public class Belt implements Tickable {
 		// TODO Auto-generated method stub
 		
 		if (newBin != null) {
-		      if (!newBin.isFinished()) return; // belt cannot move
-		      Cell c = F.getCell(F.getPicker());   // look into Picker cell
-		      if (c.getContents()!=null) return;   // wait for cell to empty
+		      if (!newBin.isFinished()) {
+		    	  return; // belt cannot move
+		      }
+		      System.out.println("Belt is moving");
+
+		      Cell c = F.getCell(F.getPicker());   
+		      if (c.getContents()!=null) {
+		    	  return;   // wait for cell to empty
+		      }
 		      c.setContents(newBin);
 		      newBin = null;
 			  }
-			// if belt is movable, loop to copy cells forward
-			if (!isMovable()) return;
+					
+			if (!isMovable()) {
+				return;
+			}
 			Object prev = null;  // temporary variable used in copy forward
+			
 			for (Point p: beltArea) {
 			  Cell c = F.getCell(p);
-			  Object t = c.getContents(); // save what it has for next time
-			  c.setContents(prev);        // write over what it was 
+			  Object t = c.getContents(); 
+			  c.setContents(prev);        
 			  prev = t;
 			  }
-		if (prev != null) System.out.println("something dropped off belt");
+			
+		if (prev != null) {
+			//toBeShipped.add((Bin)c.getContents());
+			System.out.println("Bin reached end of belt - ready to be shipped");
+		}
 		
 	}
 	
-	//TODO: need Packer method and handle what happens to bin at the endgut
 
 }
